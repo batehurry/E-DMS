@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+        <style>
+            .tabViewCenter {
+
+                margin: 100px auto;
+                width: 960px;
+            }
+
+            .panelGridCenter {
+                margin: 0 auto;
+
+            }
+
+            .menu
+            {
+                width: 120px !important;
+                margin-left:auto;
+                margin-right:auto;
+                padding: auto;
+                text-align: center;
+            }
+        </style>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:menubar> 
+
+
+                <p:menuitem styleClass="menu" value="Dashboard" icon="ui-icon-home"/> 
+                <p:menuitem styleClass="menu" value="Settings" icon="ui-icon-gear"/>
+                <p:menuitem styleClass="menu" value="Help" icon="ui-icon-help"/>
+
+                <f:facet name="options">
+                    <p:inputText placeholder="Search File" style="margin-right:10px"/>
+                    <p:outputLabel value="#{fileBean.user.name} #{fileBean.user.surname} "/>
+                    <p:commandButton id="submitButton" action="#{userBean.logout}" value="Logout" icon="ui-icon-extlink" />  
+                </f:facet>  
+            </p:menubar>
+        </h:form>
+
+
+        <p:accordionPanel multiple="true">  
+            <p:tab title="My Files">  
+                <h:form> 
+                    <h:panelGrid columns="1" style="width: 100%;">  
+
+                        <p:dataTable var="f" value="#{fileBean.files}" editable="true">  
+                            <p:column headerText="File Name">  
+                                <h:outputText value="#{f.fname}" />  
+                            </p:column>  
+
+                            <p:column headerText="Description">  
+                                <h:outputText value="#{f.fdescription}" />  
+                            </p:column>  
+
+                            <p:column headerText="Path">  
+                                <h:outputText value="#{f.fpath}" />  
+                            </p:column>  
+
+                            <p:column headerText="Date">  
+                                <h:outputText value="#{f.frdate}" />  
+                            </p:column>  
+                            <p:column style="width:6%">  
+                                <p:rowEditor />  
+                            </p:column>
+                        </p:dataTable>  
+
+                    </h:panelGrid>  
+                </h:form>
+            </p:tab>  
+            <p:tab title="File Upload">  
+                <h:form enctype="multipart/form-data">
+                    <h:panelGrid columns="2" cellpadding="10">  
+                        <p:outputLabel value="File Name : "/>
+                        <p:inputText value="#{fileBean.fileName}"/>
+
+                        <p:outputLabel value="Select File :"/>
+                        <p:fileUpload value="#{fileBean.file}" mode="simple"/> 
+
+                        <p:outputLabel value="Description :" />
+                        <p:inputTextarea rows="6" cols="50" value="#{fileBean.description}"/>
+
+                        <p:outputLabel value="Status :"/>
+                        <p:selectOneMenu value="#{fileStatusBean.fileStatusName}" >  
+                            <f:selectItem itemLabel="Select Status" itemValue="" />  
+                            <f:selectItems value="#{fileStatusBean.fileStatusMap}" /> 
+                        </p:selectOneMenu>  
+
+                        <p:outputLabel value="Permissons :"/>
+                        <p:pickList id="pickList" value="#{groupBean.permissions}" var="city"   
+                                    itemLabel="#{city}" itemValue="#{city}" />
+
+                        <p:outputLabel value="Tags :"/>
+                        <p:autoComplete value="#{fileBean.tags}" completeMethod="#{fileBean.complete}" multiple="true"/> 
+
+                        <p:commandButton value="Upload" action="#{fileBean.aktar}" ajax="false"/> 
+                    </h:panelGrid>  
+
+                </h:form>
+            </p:tab>  
+            <p:tab title="Setting">
+                <h:form>
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Old Password :" />
+                        <p:password value="#{userBean.oldPassword}"/>
+                        <p:outputLabel value="New Password :"/>
+                        <p:password value="#{userBean.newPassword}"/>
+                        <p:commandButton value="Submit" actionListener="#{userBean.changePassword}" ajax="false"/>
+                    </p:panelGrid>
+                </h:form>
+            </p:tab>
+        </p:accordionPanel> 
+    </h:body>
+</html>
+

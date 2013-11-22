@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>E-DMS</title>
+        <style>
+            .tabViewCenter {
+
+                margin: 100px auto;
+                width: 960px;
+            }
+
+            .panelGridCenter {
+                margin: 0 auto;
+
+            }
+        </style>
+    </h:head>
+    <h:body>
+        
+        <p:tabView id="tabView" styleClass="tabViewCenter">  
+
+            <p:tab id="tab1" title="Sign In">  
+                <h:form id="login">
+                    <p:growl id="growl" showDetail="true" sticky="true" />  
+                    <h:panelGrid id="grid" styleClass="panelGridCenter" columns="3" cellpadding="10">  
+                        <f:facet name="header">  
+                            <p:graphicImage style="margin: 10px 100px 10px 100px;" value="/img/logo.png" />
+                        </f:facet>  
+
+                        <h:outputText value="E-Mail : *" />  
+                        <p:inputText id="email" value="#{userBean.email}" required="true" label="E-Mail" 
+                                     requiredMessage="Please enter your email address."
+                                     validatorMessage="Invalid email format">
+                            <f:validateRegex
+                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                        </p:inputText>
+
+                        <p:message for="email" display="tooltip" />
+
+                        <h:outputText value="Password : *" />  
+                        <p:password id="password" value="#{userBean.password}" required="true" label="Password" requiredMessage="Please enter your password."/>  
+                        <p:message for="password" display="tooltip"/>
+                        <f:facet name="footer">  
+                            <p:commandButton id="submitButton" value="Login" action="#{userBean.doLogin}"  style="margin:0" update="grid,growl"/>  
+                        </f:facet> 
+
+                    </h:panelGrid>  
+                </h:form>
+            </p:tab>  
+
+            <p:tab id="tab2" title="Create an Account">  
+                <h:form id="account">
+                    <p:growl id="growl" showDetail="true" sticky="true" /> 
+                    <h:panelGrid id="grid" styleClass="panelGridCenter" columns="3" cellpadding="10">  
+                        <f:facet name="header">  
+                            <p:graphicImage style="margin: 10px 100px 10px 100px;" value="/img/logo.png" />
+                        </f:facet>  
+
+                        <h:outputText value="E-Mail : *" />  
+                        <p:inputText id="email" value="#{userBean.email}" required="true" label="E-Mail" requiredMessage="Please enter your email address."
+                                     validatorMessage="Invalid email format">
+                            <f:validateRegex
+                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                        </p:inputText>  
+                        <p:message for="email" display="tooltip" />
+
+                        <h:outputText value="Password : *" />  
+                        <p:password id="password" value="#{userBean.password}" required="true" label="Password" feedback="true"/>  
+                        <p:message for="password" display="tooltip"/>
+
+                        <h:outputText value="Name : *" />  
+                        <p:inputText id="name" value="#{userBean.name}" required="true" label="Name" />  
+                        <p:message for="name" display="tooltip" />
+
+                        <h:outputText value="Surname : *" />  
+                        <p:inputText id="surname" value="#{userBean.surname}" required="true" label="Surname" />  
+                        <p:message for="surname" display="tooltip" />
+
+
+                        <f:facet name="footer">  
+                            <p:commandButton id="submitButton" value="Create Account" actionListener="#{userBean.doCreate}"  style="margin:0" update="grid,growl"/>  
+                        </f:facet> 
+                    </h:panelGrid>  
+                </h:form>
+            </p:tab>  
+
+        </p:tabView>  
+    </h:body>
+</html>
+
