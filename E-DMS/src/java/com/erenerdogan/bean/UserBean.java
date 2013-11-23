@@ -16,6 +16,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -33,10 +34,21 @@ public class UserBean implements Serializable {
     private String newPassword;
     private String oldPassword;
     private List<Groups> myGroups;
+    private List<Users> allUser;
 
     public UserBean() {
     }
 
+    public List<Users> getAllUser() {
+        allUser = new UsersDaoImpl().getAllUsers();
+        return allUser;
+    }
+
+    public void setAllUser(List<Users> allUser) {
+        this.allUser = allUser;
+    }
+
+    
     public List<Groups> getMyGroups() {
         return myGroups;
     }
@@ -148,5 +160,10 @@ public class UserBean implements Serializable {
             new UsersDaoImpl().changePassword(id, newPassword);
         }
 
+    }
+    
+    public void remove(Users user){
+        RequestContext.getCurrentInstance().openDialog("selectCar");
+        new UsersDaoImpl().deleteUser(user.getUid());
     }
 }

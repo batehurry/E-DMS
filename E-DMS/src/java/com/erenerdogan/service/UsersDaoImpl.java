@@ -7,6 +7,7 @@ package com.erenerdogan.service;
 import com.erenerdogan.entities.Users;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -17,7 +18,6 @@ import javax.persistence.Persistence;
  * @author eren
  */
 public class UsersDaoImpl implements UsersDaoInterface {
-    
 
     private EntityManagerFactory emf;
     private EntityManager em;
@@ -55,20 +55,49 @@ public class UsersDaoImpl implements UsersDaoInterface {
             em.persist(user);
             et.commit();
             return true;
-        }catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
     @Override
     public Users getUser(int id) {
-        return em.find(Users.class, id);        
+        return em.find(Users.class, id);
     }
 
     @Override
     public void changePassword(int id, String newPassword) {
         Users u = em.find(Users.class, id);
         u.setUpassword(newPassword);
+        EntityTransaction et = em.getTransaction();
+        et.begin();
+        em.merge(u);
+        et.commit();
+        em.close();
+    }
+
+    @Override
+    public List<Users> getAllUsers() {
+        return em.createNamedQuery("Users.findAll", Users.class).getResultList();
+    }
+
+    @Override
+    public void deleteUser(int id) {
+        Users u = em.find(Users.class, id);
+        EntityTransaction et = em.getTransaction();
+        et.begin();
+        em.remove(u);
+        et.commit();
+        em.close();
+    }
+
+    @Override
+    public void updateUser(int id, Users user) {
+        Users u = em.find(Users.class, id);
+        u.setUid(user.getUid());
+        u.setUname(user.getUname());
+        u.setUsurname(user.getUsurname());
+        u.setUemail(user.getUemail());
         EntityTransaction et = em.getTransaction();
         et.begin();
         em.merge(u);

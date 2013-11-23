@@ -34,6 +34,7 @@ public class FileBean implements Serializable {
     private UserBean user;
     @ManagedProperty(value = "#{groupBean}")
     private GroupBean group;
+    
     private List<Files> files;
     private List<String> tags;
     private UploadedFile file;

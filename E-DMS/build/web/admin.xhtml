@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"  
       xmlns:f="http://java.sun.com/jsf/core"  
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         <title>Facelet Title</title>
         <style>
@@ -68,14 +69,58 @@
                             <p:column headerText="Date">  
                                 <h:outputText value="#{f.frdate}" />  
                             </p:column>  
-                            <p:column style="width:6%">  
-                                <p:rowEditor />  
+                            <p:column style="width:6%"> 
+                                <p:panelGrid columns="3">
+                                    <p:commandButton title="View" icon="ui-icon-document"/>
+                                    <p:commandButton title="Download" icon="ui-icon-circle-arrow-s"/>
+                                    <p:commandButton title="Edit" icon="ui-icon-pencil"/>
+                                </p:panelGrid>
                             </p:column>
                         </p:dataTable>  
 
                     </h:panelGrid>  
                 </h:form>
-            </p:tab>  
+            </p:tab>
+            <p:tab title="ALL USERS">  
+                <h:form> 
+                    <h:panelGrid columns="1" style="width: 100%;">  
+
+                        <p:dataTable id="dataTable" var="u" value="#{userBean.allUser}" editable="true">  
+                            <p:column headerText="Name">  
+                                <h:outputText value="#{u.uname}" />  
+                            </p:column>  
+
+                            <p:column headerText="Surname">  
+                                <h:outputText value="#{u.usurname}" />  
+                            </p:column>  
+
+                            <p:column headerText="E-Mail">  
+                                <h:outputText value="#{u.uemail}" />  
+                            </p:column>  
+
+                            <p:column headerText="Department">
+                                <ui:repeat value="#{u.groupsCollection}" var="group">
+                                    #{group.gname}
+                                </ui:repeat>
+                            </p:column>  
+                            <p:column style="width:6%"> 
+                                <p:panelGrid columns="2">
+                                    <p:commandButton title="Edit" icon="ui-icon-pencil"/>
+                                    <p:commandButton title="Delete" ajax="true" update="dataTable" action="#{userBean.remove(u)}" icon="ui-icon-trash">
+                                        <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  
+                                    </p:commandButton>  
+
+
+                                </p:panelGrid>
+                            </p:column>
+                        </p:dataTable>  
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">  
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+                        </p:confirmDialog>
+                    </h:panelGrid>  
+                </h:form>
+            </p:tab>
             <p:tab title="File Upload">  
                 <h:form enctype="multipart/form-data">
                     <h:panelGrid columns="2" cellpadding="10">  
@@ -94,7 +139,7 @@
                             <f:selectItems value="#{fileStatusBean.fileStatusMap}" /> 
                         </p:selectOneMenu>  
 
-                        <p:outputLabel value="Permissons :"/>
+                        <p:outputLabel value="Permissions :"/>
                         <p:pickList id="pickList" value="#{groupBean.permissions}" var="city"   
                                     itemLabel="#{city}" itemValue="#{city}" />
 

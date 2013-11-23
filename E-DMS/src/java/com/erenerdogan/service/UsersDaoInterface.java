@@ -5,6 +5,7 @@
 package com.erenerdogan.service;
 
 import com.erenerdogan.entities.Users;
+import java.util.List;
 
 /**
  *
@@ -15,4 +16,7 @@ public interface UsersDaoInterface {
     boolean createUser(String email,String password,String name,String surname);
     Users getUser(int id);
     void changePassword(int id,String newPassword);
+    List<Users> getAllUsers();
+    void deleteUser(int id);
+    void updateUser(int id, Users user);
 }
