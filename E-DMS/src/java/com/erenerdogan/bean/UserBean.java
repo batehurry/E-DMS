@@ -17,6 +17,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -35,9 +37,21 @@ public class UserBean implements Serializable {
     private String oldPassword;
     private List<Groups> myGroups;
     private List<Users> allUser;
+    private boolean editable;
+    
 
     public UserBean() {
     }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+    
+    
 
     public List<Users> getAllUser() {
         allUser = new UsersDaoImpl().getAllUsers();
@@ -163,7 +177,10 @@ public class UserBean implements Serializable {
     }
     
     public void remove(Users user){
-        RequestContext.getCurrentInstance().openDialog("selectCar");
         new UsersDaoImpl().deleteUser(user.getUid());
-    }
+    } 
+    
+    public void edit(Users user){
+        user.setEditable(true);
+    } 
 }

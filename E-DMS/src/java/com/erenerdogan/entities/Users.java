@@ -49,6 +49,8 @@ public class Users implements Serializable {
     @OneToMany(mappedBy = "cuid")
     private Collection<Comments> commentsCollection;
 
+    private transient boolean editable;
+    
     public Users() {
     }
 
@@ -56,6 +58,15 @@ public class Users implements Serializable {
         this.uid = uid;
     }
 
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
+    
     public Integer getUid() {
         return uid;
     }
