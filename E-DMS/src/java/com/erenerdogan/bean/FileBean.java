@@ -10,14 +10,16 @@ import com.erenerdogan.service.FilesDaoImpl;
 import com.erenerdogan.service.GroupSharedDaoImpl;
 import com.erenerdogan.service.GroupsDaoImpl;
 import com.erenerdogan.service.TagsDaoImpl;
-import java.io.Serializable;
+import java.io.*;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -34,15 +36,24 @@ public class FileBean implements Serializable {
     private UserBean user;
     @ManagedProperty(value = "#{groupBean}")
     private GroupBean group;
-    
     private List<Files> files;
+    private List<Files> allFiles;
     private List<String> tags;
-    private UploadedFile file;
+    private UploadedFile upload;
     private String fileName;
     private String description;
     private Date date;
 
     public FileBean() {
+    }
+
+    public List<Files> getAllFiles() {
+        allFiles = new FilesDaoImpl().getAllFiles();
+        return allFiles;
+    }
+
+    public void setAllFiles(List<Files> allFiles) {
+        this.allFiles = allFiles;
     }
 
     public Date getDate() {
@@ -70,11 +81,11 @@ public class FileBean implements Serializable {
     }
 
     public UploadedFile getFile() {
-        return file;
+        return upload;
     }
 
-    public void setFile(UploadedFile file) {
-        this.file = file;
+    public void setFile(UploadedFile upload) {
+        this.upload = upload;
     }
 
     public GroupBean getGroup() {
@@ -122,12 +133,12 @@ public class FileBean implements Serializable {
 
     public void upload(ActionEvent ae) {
         System.out.println("Upload");
-        System.out.println(file.getFileName());
+        System.out.println(upload.getFileName());
     }
 
     public void handleFileUpload(FileUploadEvent event) {
         System.out.println("Upload");
-        file = event.getFile();
+        upload = event.getFile();
         System.out.println(event.getFile().getFileName());
 
     }
@@ -140,11 +151,14 @@ public class FileBean implements Serializable {
         f.setFdescription(description);
         Timestamp t = new Timestamp(new Date().getTime());
         f.setFrdate(t);
-        f.setFpath(file.getFileName());
-        
+        String path = fileUpload(upload);
+        if (path != null) {
+            f.setFpath(path);
+        }
+
         new FilesDaoImpl().uploadFile(f);
 
-        if (tags!=null && tags.size() > 0) {
+        if (tags != null && tags.size() > 0) {
             for (String tag : tags) {
                 new TagsDaoImpl().addTags(f, tag);
             }
@@ -154,23 +168,46 @@ public class FileBean implements Serializable {
         List<Groups> gr = new GroupsDaoImpl().getAllGroups();
         if (target.size() > 0) {
             // Türkçe karakter Problemi var 
-            System.out.println("Target e geldi");
             for (String string : target) {
-                System.out.println("Target e geldi" + string);
                 for (Groups groups : gr) {
-                    System.out.println("Target e geldi" + groups.getGname());
                     if (groups.getGname().equals(string)) {
-                        System.out.println("İş Tamam...");
                         new GroupSharedDaoImpl().addGroupsShared(f, groups);
                     }
                 }
             }
         } else {
-            System.out.println("Target e gelmedi");
+
             for (Groups groups : user.getMyGroups()) {
                 new GroupSharedDaoImpl().addGroupsShared(f, groups);
             }
         }
         return "admin";
+    }
+
+    private String fileUpload(UploadedFile f) {
+        try {
+            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMddHHmmss");
+            String name = fmt.format(new Date())
+                    + f.getFileName().substring(
+                    f.getFileName().lastIndexOf('.'));
+            File file = new File(path + "files/" + name);
+
+            InputStream is = f.getInputstream();
+            OutputStream out = new FileOutputStream(file);
+            byte buf[] = new byte[1024];
+            int len;
+            while ((len = is.read(buf)) > 0) {
+                System.out.println(buf.length);
+                out.write(buf, 0, len);
+            }
+            is.close();
+            out.close();
+            System.out.println(file.getPath());
+            return name;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

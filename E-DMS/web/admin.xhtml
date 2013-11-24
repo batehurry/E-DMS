@@ -49,7 +49,7 @@
 
 
         <p:accordionPanel multiple="true">  
-            <p:tab title="My Files">  
+            <p:tab title="MY FİLES">  
                 <h:form> 
                     <h:panelGrid columns="1" style="width: 100%;">  
 
@@ -84,15 +84,11 @@
             <p:tab title="ALL USERS">  
                 <h:form id="form"> 
 
-                    <p:growl id="messages" showDetail="true"/>
-
                     <h:panelGrid columns="1" style="width: 100%;">  
 
                         <p:dataTable id="dataTable" var="u" value="#{userBean.allUser}" editable="true">  
-                            <p:column> 
-                                <f:facet name="header">Name</f:facet>
-                                <h:outputText value="#{u.uname}" rendered="#{not userBean.editable}"/>  
-                                <p:inputText value="#{u.uname}" rendered="#{userBean.editable}"/> 
+                            <p:column headerText="Name"> 
+                                <h:outputText value="#{u.uname}" />  
                             </p:column>  
 
                             <p:column headerText="Surname">  
@@ -111,8 +107,8 @@
                             <p:column style="width:6%"> 
                                 <p:panelGrid columns="2">
 
-                                    <p:commandButton title="Delete" ajax="true" update="dataTable" action="#{userBean.edit(u)}" icon="ui-icon-pencil">
-                                         
+                                    <p:commandButton title="Edit" ajax="true" update="dataTable" action="#{userBean.edit(u)}" icon="ui-icon-pencil">
+
                                     </p:commandButton>
                                     <p:commandButton title="Delete" ajax="true" update="dataTable" action="#{userBean.remove(u)}" icon="ui-icon-trash">
                                         <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  
@@ -129,7 +125,7 @@
                     </h:panelGrid>  
                 </h:form>
             </p:tab>
-            <p:tab title="File Upload">  
+            <p:tab title="FİLE UPLOAD">  
                 <h:form enctype="multipart/form-data">
                     <h:panelGrid columns="2" cellpadding="10">  
                         <p:outputLabel value="File Name : "/>
@@ -137,6 +133,7 @@
 
                         <p:outputLabel value="Select File :"/>
                         <p:fileUpload value="#{fileBean.file}" mode="simple"/> 
+                        
 
                         <p:outputLabel value="Description :" />
                         <p:inputTextarea rows="6" cols="50" value="#{fileBean.description}"/>
@@ -159,7 +156,7 @@
 
                 </h:form>
             </p:tab>  
-            <p:tab title="Setting">
+            <p:tab title="PASSWORD CHANGE">
                 <h:form>
                     <p:panelGrid columns="2">
                         <p:outputLabel value="Old Password :" />
@@ -168,6 +165,38 @@
                         <p:password value="#{userBean.newPassword}"/>
                         <p:commandButton value="Submit" actionListener="#{userBean.changePassword}" ajax="false"/>
                     </p:panelGrid>
+                </h:form>
+            </p:tab>
+            <p:tab title="ALL FİLES">
+                <h:form> 
+                    <h:panelGrid columns="1" style="width: 100%;">  
+
+                        <p:dataTable var="a" value="#{fileBean.allFiles}" editable="true">  
+                            <p:column headerText="File Name">  
+                                <h:outputText value="#{a.fname}" />  
+                            </p:column>  
+
+                            <p:column headerText="Description">  
+                                <h:outputText value="#{a.fdescription}" />  
+                            </p:column>  
+
+                            <p:column headerText="Path">  
+                                <h:outputText value="#{a.fpath}" />  
+                            </p:column>  
+
+                            <p:column headerText="Date">  
+                                <h:outputText value="#{a.frdate}" />  
+                            </p:column>  
+                            <p:column style="width:6%"> 
+                                <p:panelGrid columns="3">
+                                    <p:commandButton title="View" icon="ui-icon-document"/>
+                                    <p:commandButton title="Download" icon="ui-icon-circle-arrow-s"/>
+                                    <p:commandButton title="Edit" icon="ui-icon-pencil"/>
+                                </p:panelGrid>
+                            </p:column>
+                        </p:dataTable>  
+
+                    </h:panelGrid>  
                 </h:form>
             </p:tab>
         </p:accordionPanel> 
