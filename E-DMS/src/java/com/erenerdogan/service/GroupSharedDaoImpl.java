@@ -10,6 +10,7 @@ import com.erenerdogan.entities.Groups;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -44,32 +45,24 @@ public class GroupSharedDaoImpl implements GroupSharedDaoInterface {
     }
 
     @Override
-    public void addGroupsShared(Files file, Groups groupID) {
-
-        GroupShared gs = new GroupShared();
-        gs.setGsfid(file);
-        gs.setGsgid(groupID);
-
+    public void addGroupsShared(Files file, List<Groups> groupID) {
+        System.out.println("AddGroupsShared Geldi.");
+        Set<Groups> groupSet = new GroupsDaoImpl().getHierarchyGroup(groupID);
+        List<GroupShared> list = new ArrayList<GroupShared>();
+        for (Groups group : groupSet) {
+            GroupShared gs = new GroupShared();
+            gs.setGsfid(file);
+            gs.setGsgid(group);
+            list.add(gs);
+            System.out.println("add");
+        }
         EntityTransaction et = em.getTransaction();
         et.begin();
-        if (groupID.getGid().equals(groupID.getGsubid())) {
-            em.persist(gs);
-        } else {
-            List<GroupShared> l = new ArrayList<GroupShared>();
-            l.add(gs);
-            do {
-                groupID = em.find(Groups.class, groupID.getGsubid());
-                GroupShared gs1 = new GroupShared();
-                gs1.setGsfid(file);
-                gs1.setGsgid(groupID);
-                l.add(gs1);
-            } while (!groupID.getGid().equals(groupID.getGsubid()));
-            
-            for (GroupShared groupShared : l) {
-                em.persist(groupShared);
-            }
+        for (GroupShared groupShared : list) {
+            em.persist(groupShared);
         }
         et.commit();
         em.close();
+        System.out.println("AddGroupsShared Bitti.");
     }
 }

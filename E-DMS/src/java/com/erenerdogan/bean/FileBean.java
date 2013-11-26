@@ -8,25 +8,19 @@ import com.erenerdogan.entities.Files;
 import com.erenerdogan.entities.Groups;
 import com.erenerdogan.service.*;
 import java.io.*;
-import java.net.URL;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletResponse;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -50,7 +44,6 @@ public class FileBean implements Serializable {
     private String fileName;
     private String description;
     private Date date;
-    
     private DefaultStreamedContent download;
 
     public void setDownload(DefaultStreamedContent download) {
@@ -64,7 +57,7 @@ public class FileBean implements Serializable {
 
     public void prepDownload(String fileName) throws Exception {
         String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
-        File file = new File(path + "files/"+fileName);
+        File file = new File(path + "files/" + fileName);
         InputStream input = new FileInputStream(file);
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         setDownload(new DefaultStreamedContent(input, externalContext.getMimeType(file.getName()), file.getName()));
@@ -204,20 +197,20 @@ public class FileBean implements Serializable {
 
         List<String> target = group.getPermissions().getTarget();
         List<Groups> gr = new GroupsDaoImpl().getAllGroups();
+        List<Groups> tmp = new ArrayList<Groups>();
         if (target.size() > 0) {
-            // Türkçe karakter Problemi var 
             for (String string : target) {
                 for (Groups groups : gr) {
                     if (groups.getGname().equals(string)) {
-                        new GroupSharedDaoImpl().addGroupsShared(f, groups);
+                        tmp.add(groups);
                     }
                 }
             }
+            new GroupSharedDaoImpl().addGroupsShared(f, tmp);
         } else {
 
-            for (Groups groups : user.getMyGroups()) {
-                new GroupSharedDaoImpl().addGroupsShared(f, groups);
-            }
+            new GroupSharedDaoImpl().addGroupsShared(f, user.getMyGroups());
+ 
         }
         return "admin";
     }

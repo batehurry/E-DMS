@@ -6,6 +6,7 @@ package com.erenerdogan.service;
 
 import com.erenerdogan.entities.Groups;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -14,5 +15,5 @@ import java.util.List;
 public interface GroupsDaoInterface {
     List<Groups> getUserGroups(int id);
     List<Groups> getAllGroups();
-            
+    Set<Groups> getHierarchyGroup(List<Groups> group);
 }
