@@ -20,18 +20,28 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean
 @RequestScoped
 public class FileStatusBean {
+    private int fileStatusId;
     private String fileStatusName;
     private List<FileStatus> fileStatusList;
-    private Map<String,String> fileStatusMap;
+    private Map<String,Integer> fileStatusMap;
     
     public FileStatusBean() {
         fileStatusList = new FileStatusDaoImp().getAllFileStatus();
-        fileStatusMap = new Hashtable<String, String>();
+        fileStatusMap = new Hashtable<String, Integer>();
         for (FileStatus fileStatus : fileStatusList) {
-            fileStatusMap.put(fileStatus.getFsname(), fileStatus.getFsname());
+            fileStatusMap.put(fileStatus.getFsname(), fileStatus.getFsid());
         }
     }
 
+    public int getFileStatusId() {
+        return fileStatusId;
+    }
+
+    public void setFileStatusId(int fileStatusId) {
+        this.fileStatusId = fileStatusId;
+    }
+
+    
     public String getFileStatusName() {
         return fileStatusName;
     }
@@ -48,11 +58,11 @@ public class FileStatusBean {
         this.fileStatusList = fileStatusList;
     }
 
-    public Map<String, String> getFileStatusMap() {
+    public Map<String, Integer> getFileStatusMap() {
         return fileStatusMap;
     }
 
-    public void setFileStatusMap(Map<String, String> fileStatusMap) {
+    public void setFileStatusMap(Map<String, Integer> fileStatusMap) {
         this.fileStatusMap = fileStatusMap;
     }
    

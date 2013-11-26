@@ -6,22 +6,27 @@ package com.erenerdogan.bean;
 
 import com.erenerdogan.entities.Files;
 import com.erenerdogan.entities.Groups;
-import com.erenerdogan.service.FilesDaoImpl;
-import com.erenerdogan.service.GroupSharedDaoImpl;
-import com.erenerdogan.service.GroupsDaoImpl;
-import com.erenerdogan.service.TagsDaoImpl;
+import com.erenerdogan.service.*;
 import java.io.*;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -36,6 +41,8 @@ public class FileBean implements Serializable {
     private UserBean user;
     @ManagedProperty(value = "#{groupBean}")
     private GroupBean group;
+    @ManagedProperty(value = "#{fileStatusBean}")
+    private FileStatusBean fileStatus;
     private List<Files> files;
     private List<Files> allFiles;
     private List<String> tags;
@@ -43,8 +50,36 @@ public class FileBean implements Serializable {
     private String fileName;
     private String description;
     private Date date;
+    
+    private DefaultStreamedContent download;
+
+    public void setDownload(DefaultStreamedContent download) {
+        this.download = download;
+    }
+
+    public DefaultStreamedContent getDownload() throws Exception {
+        System.out.println("GET = " + download.getName());
+        return download;
+    }
+
+    public void prepDownload(String fileName) throws Exception {
+        String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
+        File file = new File(path + "files/"+fileName);
+        InputStream input = new FileInputStream(file);
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        setDownload(new DefaultStreamedContent(input, externalContext.getMimeType(file.getName()), file.getName()));
+        System.out.println("PREP = " + download.getName());
+    }
 
     public FileBean() {
+    }
+
+    public FileStatusBean getFileStatus() {
+        return fileStatus;
+    }
+
+    public void setFileStatus(FileStatusBean fileStatus) {
+        this.fileStatus = fileStatus;
     }
 
     public List<Files> getAllFiles() {
@@ -80,11 +115,11 @@ public class FileBean implements Serializable {
         this.fileName = fileName;
     }
 
-    public UploadedFile getFile() {
+    public UploadedFile getUpload() {
         return upload;
     }
 
-    public void setFile(UploadedFile upload) {
+    public void setUpload(UploadedFile upload) {
         this.upload = upload;
     }
 
@@ -155,6 +190,9 @@ public class FileBean implements Serializable {
         if (path != null) {
             f.setFpath(path);
         }
+        System.out.println("File Status ID : " + fileStatus.getFileStatusId());
+
+        f.setFfsid(new FileStatusDaoImp().getFileStatus(fileStatus.getFileStatusId()));
 
         new FilesDaoImpl().uploadFile(f);
 

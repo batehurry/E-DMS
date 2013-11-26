@@ -183,4 +183,6 @@ public class UserBean implements Serializable {
     public void edit(Users user){
         user.setEditable(true);
     } 
+    
+    
 }

@@ -28,6 +28,15 @@
                 text-align: center;
             }
         </style>
+        <script type="text/javascript">  
+            function start() {  
+                PF('statusDialog').show();  
+            }  
+  
+            function stop() {  
+                PF('statusDialog').hide();  
+            }  
+        </script>
     </h:head>
     <h:body>
 
@@ -46,7 +55,6 @@
                 </f:facet>  
             </p:menubar>
         </h:form>
-
 
         <p:accordionPanel multiple="true">  
             <p:tab title="MY FİLES">  
@@ -71,8 +79,10 @@
                             </p:column>  
                             <p:column style="width:6%"> 
                                 <p:panelGrid columns="3">
-                                    <p:commandButton title="View" icon="ui-icon-document"/>
-                                    <p:commandButton title="Download" icon="ui-icon-circle-arrow-s"/>
+                                    
+                                    <p:commandButton id="downloadLink" icon="ui-icon-circle-arrow-s" ajax="false" actionListener="#{fileBean.prepDownload(f.fpath)}">
+                                        <p:fileDownload value="#{fileBean.download}" />
+                                    </p:commandButton>
                                     <p:commandButton title="Edit" icon="ui-icon-pencil"/>
                                 </p:panelGrid>
                             </p:column>
@@ -132,16 +142,16 @@
                         <p:inputText value="#{fileBean.fileName}"/>
 
                         <p:outputLabel value="Select File :"/>
-                        <p:fileUpload value="#{fileBean.file}" mode="simple"/> 
-                        
+                        <p:fileUpload value="#{fileBean.upload}" mode="simple"/> 
+
 
                         <p:outputLabel value="Description :" />
                         <p:inputTextarea rows="6" cols="50" value="#{fileBean.description}"/>
 
                         <p:outputLabel value="Status :"/>
-                        <p:selectOneMenu value="#{fileStatusBean.fileStatusName}" >  
+                        <p:selectOneMenu value="#{fileBean.fileStatus.fileStatusId}" >  
                             <f:selectItem itemLabel="Select Status" itemValue="" />  
-                            <f:selectItems value="#{fileStatusBean.fileStatusMap}" /> 
+                            <f:selectItems value="#{fileBean.fileStatus.fileStatusMap}" /> 
                         </p:selectOneMenu>  
 
                         <p:outputLabel value="Permissions :"/>

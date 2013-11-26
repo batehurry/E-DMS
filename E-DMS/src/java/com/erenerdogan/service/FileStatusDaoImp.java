@@ -28,5 +28,10 @@ public class FileStatusDaoImp implements FileStatusDaoInterface{
     public List<FileStatus> getAllFileStatus() {
         return em.createNamedQuery("FileStatus.findAll", FileStatus.class).getResultList();
     }
+
+    @Override
+    public FileStatus getFileStatus(int id) {
+        return em.find(FileStatus.class, id);
+    }
     
 }

@@ -13,4 +13,6 @@ import java.util.List;
  */
 public interface FileStatusDaoInterface {
     List<FileStatus> getAllFileStatus();
+    FileStatus getFileStatus(int id);
+    
 }
