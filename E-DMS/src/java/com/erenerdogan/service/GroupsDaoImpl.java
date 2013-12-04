@@ -4,9 +4,7 @@
  */
 package com.erenerdogan.service;
 
-import com.erenerdogan.entities.GroupShared;
 import com.erenerdogan.entities.Groups;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;

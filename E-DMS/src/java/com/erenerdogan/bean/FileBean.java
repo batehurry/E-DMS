@@ -6,6 +6,7 @@ package com.erenerdogan.bean;
 
 import com.erenerdogan.entities.Files;
 import com.erenerdogan.entities.Groups;
+import com.erenerdogan.entities.Users;
 import com.erenerdogan.service.*;
 import java.io.*;
 import java.sql.Timestamp;
@@ -37,6 +38,9 @@ public class FileBean implements Serializable {
     private GroupBean group;
     @ManagedProperty(value = "#{fileStatusBean}")
     private FileStatusBean fileStatus;
+    @ManagedProperty(value="#{param.fileID}")
+    private String fileID;
+    
     private List<Files> files;
     private List<Files> allFiles;
     private List<String> tags;
@@ -45,7 +49,8 @@ public class FileBean implements Serializable {
     private String description;
     private Date date;
     private DefaultStreamedContent download;
-
+    private List<Users> pendingUsers;
+  
     public void setDownload(DefaultStreamedContent download) {
         this.download = download;
     }
@@ -66,6 +71,27 @@ public class FileBean implements Serializable {
 
     public FileBean() {
     }
+
+    public List<Users> getPendingUsers() {
+        pendingUsers = new UsersDaoImpl().getPendingUsers();
+        return pendingUsers;
+    }
+
+    public void setPendingUsers(List<Users> pendingUsers) {
+        this.pendingUsers = pendingUsers;
+    }
+
+    
+    
+    public String getFileID() {
+        return fileID;
+    }
+
+    public void setFileID(String fileID) {
+        this.fileID = fileID;
+    }
+    
+    
 
     public FileStatusBean getFileStatus() {
         return fileStatus;
@@ -210,9 +236,9 @@ public class FileBean implements Serializable {
         } else {
 
             new GroupSharedDaoImpl().addGroupsShared(f, user.getMyGroups());
- 
+
         }
-        return "admin";
+        return "admin?faces-redirect=true";
     }
 
     private String fileUpload(UploadedFile f) {
@@ -240,5 +266,17 @@ public class FileBean implements Serializable {
             e.printStackTrace();
             return null;
         }
+    }
+    
+    
+    public String showFileView() {
+        if (fileID == null) {
+            return "admin?faces-redirect=true";
+        }
+        return "success?fileID="+fileID+"faces-redirect=true";
+    }
+    
+    public void remove(Files file){
+        new FilesDaoImpl().deleteFile(file.getFid());
     }
 }

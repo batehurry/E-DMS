@@ -104,4 +104,11 @@ public class UsersDaoImpl implements UsersDaoInterface {
         et.commit();
         em.close();
     }
+
+    @Override
+    public List<Users> getPendingUsers() {
+        return em.createNamedQuery("Users.findByUstatus").setParameter("ustatus", 0).getResultList();
+    }
+    
+    
 }

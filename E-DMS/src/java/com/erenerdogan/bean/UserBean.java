@@ -143,10 +143,10 @@ public class UserBean implements Serializable {
                 context.addMessage(null, new FacesMessage("Login Error", "Name or Surname Mistake"));
             } else {
                 context.addMessage(null, new FacesMessage("Login Successful", "Hello " + name + " " + surname));
-                return "admin";
+                return "admin?faces-redirect=true";
             }
         }
-        return "index";
+        return "index?faces-redirect=true";
     }
 
     public void doCreate(ActionEvent ae) {
@@ -166,7 +166,7 @@ public class UserBean implements Serializable {
 
     public String logout() {
         System.out.println("logout");
-        return "index";
+        return "index?faces-redirect=true";
     }
 
     public void changePassword(ActionEvent e) {

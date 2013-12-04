@@ -15,5 +15,6 @@ public interface FilesDaoInterface {
     List<Files> myAllFiles(int userID);
     List<Files> getAllFiles();
     void uploadFile(Files file);
-            
+    Files getFileView(int id);    
+    void deleteFile(int fileID);
 }

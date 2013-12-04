@@ -19,4 +19,5 @@ public interface UsersDaoInterface {
     List<Users> getAllUsers();
     void deleteUser(int id);
     void updateUser(int id, Users user);
+    List<Users> getPendingUsers();
 }

@@ -21,7 +21,40 @@
     </h:head>
     <h:body>
         
-        başarılı
+        başarılı #{fileViewBean.fileID}<br/>
+        #{fileViewBean.fileView.fid}<br/>
+        #{fileViewBean.fileView.fname}<br/>
+        #{fileViewBean.fileView.fdescription}<br/>
+        #{fileViewBean.fileView.frdate}<br/>
+        #{fileViewBean.fileView.ffsid.fsname}<br/>
+        
+        <p:dataTable var="g" value="#{fileViewBean.fileView.groupSharedCollection}" editable="true">  
+            <p:column headerText="Group Name">  
+                <h:outputText value="#{g.gsgid.gname}" />  
+            </p:column>  
+        </p:dataTable>
+        
+        <p:dataTable var="t" value="#{fileViewBean.fileView.tagsCollection}" editable="true">  
+            <p:column headerText="Tag">  
+                <h:outputText value="#{t.tname}" />  
+            </p:column>      
+        </p:dataTable>
+        
+        <p:dataTable var="c" value="#{fileViewBean.fileView.commentsCollection}" editable="true">  
+            <p:column headerText="Title">  
+                <h:outputText value="#{c.ctitle}" />  
+            </p:column>  
+            <p:column headerText="Description">  
+                <h:outputText value="#{c.cdescription}" />  
+            </p:column>  
+            <p:column headerText="Date">  
+                <h:outputText value="#{c.cdate}" />  
+            </p:column>  
+            <p:column headerText="Author">  
+                <h:outputText value="#{c.cuid.uname} #{c.cuid.usurname}" />  
+            </p:column>
+            
+        </p:dataTable>
     </h:body>
 </html>
 

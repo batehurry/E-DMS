@@ -51,5 +51,21 @@ public class FilesDaoImpl implements FilesDaoInterface{
         et.commit();
         em.close();
     }
+
+    @Override
+    public Files getFileView(int id) {
+        return em.find(Files.class, id);
+    }
+
+    @Override
+    public void deleteFile(int fileID) {
+        Files f = em.find(Files.class, fileID);
+        EntityTransaction et = em.getTransaction();
+        et.begin();
+        em.remove(f);
+        et.commit();
+        em.close();
+    }
+    
     
 }
