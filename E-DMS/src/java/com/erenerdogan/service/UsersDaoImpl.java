@@ -62,6 +62,7 @@ public class UsersDaoImpl implements UsersDaoInterface {
 
     @Override
     public Users getUser(int id) {
+        System.out.println("GET USER");
         return em.find(Users.class, id);
     }
 
@@ -93,14 +94,10 @@ public class UsersDaoImpl implements UsersDaoInterface {
 
     @Override
     public void updateUser(int id, Users user) {
-        Users u = em.find(Users.class, id);
-        u.setUid(user.getUid());
-        u.setUname(user.getUname());
-        u.setUsurname(user.getUsurname());
-        u.setUemail(user.getUemail());
+        System.out.println("Edit grup size " + user.getGroupsCollection().size());
         EntityTransaction et = em.getTransaction();
         et.begin();
-        em.merge(u);
+        em.merge(user);
         et.commit();
         em.close();
     }
@@ -108,6 +105,14 @@ public class UsersDaoImpl implements UsersDaoInterface {
     @Override
     public List<Users> getPendingUsers() {
         return em.createNamedQuery("Users.findByUstatus").setParameter("ustatus", 0).getResultList();
+    }
+
+    @Override
+    public boolean getUserStatus(int id) {
+        int status = em.find(Users.class, id).getUstatus();
+        if(status == 1)
+            return true;
+        return false;
     }
     
     

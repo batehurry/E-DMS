@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"  
       xmlns:f="http://java.sun.com/jsf/core"  
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <title>Facelet Title</title>
         <style>
@@ -27,11 +28,11 @@
                 padding: auto;
                 text-align: center;
             }
-            
+
             .acil{
                 background-color: red;
             }
-            
+
             .normal{
                 background-color: greenyellow;
             }
@@ -54,7 +55,7 @@
 
                 <p:menuitem styleClass="menu" value="Dashboard" action="admin?faces-redirect=true" icon="ui-icon-home"/> 
                 <p:menuitem styleClass="menu" value="Settings" action="settings?faces-redirect=true" icon="ui-icon-gear">
-                    
+
                 </p:menuitem>
                 <p:menuitem styleClass="menu" value="Help" icon="ui-icon-help"/>
 
@@ -72,7 +73,7 @@
                     <h:panelGrid columns="1" style="width: 100%;">  
 
                         <p:dataTable id="fileDataTable"  var="f" value="#{fileBean.files}" editable="true" 
-                                      rowStyleClass="#{f.ffsid.fsid eq 1 ? 'acil' : 'normal'}">  
+                                     rowStyleClass="#{f.ffsid.fsid eq 1 ? 'acil' : 'normal'}">  
                             <p:column headerText="File Name">  
                                 <h:outputText value="#{f.fname}" />  
                             </p:column>  
@@ -93,7 +94,7 @@
                                     <p:commandButton title="View" action="#{fileBean.showFileView}" icon="ui-icon-document">
                                         <f:param name="fileID" value="#{f.fid}" />
                                     </p:commandButton>
-                                    <p:commandButton id="downloadLink" icon="ui-icon-circle-arrow-s" ajax="false" actionListener="#{fileBean.prepDownload(f.fpath)}">
+                                    <p:commandButton id="downloadLink" title="Download" icon="ui-icon-circle-arrow-s" ajax="false" actionListener="#{fileBean.prepDownload(f.fpath)}">
                                         <p:fileDownload value="#{fileBean.download}" />
                                     </p:commandButton>
                                     <p:commandButton title="Edit" icon="ui-icon-pencil"/>
@@ -127,14 +128,16 @@
 
                             <p:column headerText="Department">
                                 <ui:repeat value="#{u.groupsCollection}" var="group">
-                                    #{group.gname}
+                                    #{group.gname} #{userBean.commaPrint(u.groupsCollection)}
+                                    
                                 </ui:repeat>
                             </p:column>  
                             <p:column style="width:6%"> 
                                 <p:panelGrid columns="2">
 
-                                    <p:commandButton title="Edit" ajax="true" update="dataTable" action="#{userBean.edit(u)}" icon="ui-icon-pencil">
-
+                                    <p:commandButton title="Edit" ajax="true" update="dataTable" 
+                                                     action="#{pendingUserBean.editUser}" icon="ui-icon-pencil">
+                                        <f:param name="userID" value="#{u.uid}" />                      
                                     </p:commandButton>
                                     <p:commandButton title="Delete" ajax="true" update="dataTable" action="#{userBean.remove(u)}" icon="ui-icon-trash">
                                         <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  
@@ -231,7 +234,7 @@
 
                     <h:panelGrid columns="1" style="width: 100%;">  
 
-                        <p:dataTable id="dataTable" var="u" value="#{fileBean.pendingUsers}" editable="true">  
+                        <p:dataTable id="dataTable" var="u" value="#{pendingUserBean.pendingUsers}" editable="true">  
                             <p:column headerText="Name"> 
                                 <h:outputText value="#{u.uname}" />  
                             </p:column>  
@@ -252,8 +255,10 @@
                             <p:column style="width:6%"> 
                                 <p:panelGrid columns="2">
 
-                                    <p:commandButton title="Edit" ajax="true" update="dataTable" action="#{userBean.edit(u)}" icon="ui-icon-pencil">
-
+                                    <p:commandButton title="Edit" ajax="true" update="dataTable"
+                                                     action="#{pendingUserBean.editUser}" 
+                                                     icon="ui-icon-pencil">
+                                        <f:param name="userID" value="#{u.uid}" />
                                     </p:commandButton>
                                     <p:commandButton title="Delete" ajax="true" update="dataTable" action="#{userBean.remove(u)}" icon="ui-icon-trash">
                                         <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  

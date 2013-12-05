@@ -10,6 +10,7 @@ import com.erenerdogan.service.GroupsDaoImpl;
 import com.erenerdogan.service.UsersDaoImpl;
 import com.erenerdogan.service.UsersDaoInterface;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -184,5 +185,11 @@ public class UserBean implements Serializable {
         user.setEditable(true);
     } 
     
-    
+    public String commaPrint(Collection c){
+        if(c.size() > 1 && c.size()-1 < c.size())
+            return ",";
+        return "";
+    }
+	
+
 }

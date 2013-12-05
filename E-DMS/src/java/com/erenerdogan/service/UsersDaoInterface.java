@@ -20,4 +20,6 @@ public interface UsersDaoInterface {
     void deleteUser(int id);
     void updateUser(int id, Users user);
     List<Users> getPendingUsers();
+    boolean getUserStatus(int id);
+    
 }

@@ -49,7 +49,6 @@ public class FileBean implements Serializable {
     private String description;
     private Date date;
     private DefaultStreamedContent download;
-    private List<Users> pendingUsers;
   
     public void setDownload(DefaultStreamedContent download) {
         this.download = download;
@@ -72,14 +71,7 @@ public class FileBean implements Serializable {
     public FileBean() {
     }
 
-    public List<Users> getPendingUsers() {
-        pendingUsers = new UsersDaoImpl().getPendingUsers();
-        return pendingUsers;
-    }
-
-    public void setPendingUsers(List<Users> pendingUsers) {
-        this.pendingUsers = pendingUsers;
-    }
+    
 
     
     
