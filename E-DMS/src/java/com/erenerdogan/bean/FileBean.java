@@ -265,7 +265,7 @@ public class FileBean implements Serializable {
         if (fileID == null) {
             return "admin?faces-redirect=true";
         }
-        return "success?fileID="+fileID+"faces-redirect=true";
+        return "fileView?fileID="+fileID+"faces-redirect=true";
     }
     
     public void remove(Files file){

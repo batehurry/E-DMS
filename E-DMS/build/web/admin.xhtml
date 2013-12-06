@@ -200,7 +200,7 @@
                 <h:form> 
                     <h:panelGrid columns="1" style="width: 100%;">  
 
-                        <p:dataTable var="a" value="#{fileBean.allFiles}" editable="true"
+                        <p:dataTable id="allFileDataTable" var="a" value="#{fileBean.allFiles}" editable="true"
                                      rowStyleClass="#{a.ffsid.fsid eq 1 ? 'acil' : 'normal'}">  
                             <p:column headerText="File Name">  
                                 <h:outputText value="#{a.fname}" />  
@@ -219,9 +219,16 @@
                             </p:column>  
                             <p:column style="width:6%"> 
                                 <p:panelGrid columns="3">
-                                    <p:commandButton title="View" icon="ui-icon-document"/>
-                                    <p:commandButton title="Download" icon="ui-icon-circle-arrow-s"/>
+                                    <p:commandButton title="View" action="#{fileBean.showFileView}" icon="ui-icon-document">
+                                        <f:param name="fileID" value="#{a.fid}" />
+                                    </p:commandButton>
+                                    <p:commandButton  title="Download" icon="ui-icon-circle-arrow-s" ajax="false" actionListener="#{fileBean.prepDownload(f.fpath)}">
+                                        <p:fileDownload value="#{fileBean.download}" />
+                                    </p:commandButton>
                                     <p:commandButton title="Edit" icon="ui-icon-pencil"/>
+                                    <p:commandButton title="Delete" ajax="true" update="allFileDataTable" action="#{fileBean.remove(a)}" icon="ui-icon-trash">
+                                        <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  
+                                    </p:commandButton>
                                 </p:panelGrid>
                             </p:column>
                         </p:dataTable>  

@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>E-DMS</title>
+        <style>
+            .tabViewCenter {
+
+                margin: 100px auto;
+                width: 960px;
+            }
+
+            .panelGridCenter {
+                margin: 0 auto;
+
+            }
+        </style>
+    </h:head>
+    <h:body>
+
+        <h:panelGrid styleClass="panelGridCenter" columns="2" cellpadding="10">  
+            <h:outputText value="File Name :" /> 
+            <h:outputText value="#{fileViewBean.fileView.fname}" />  
+
+            <h:outputText value="File Description :" /> 
+            <h:outputText value="#{fileViewBean.fileView.fdescription}" />  
+
+            <h:outputText value="File Upload Date :" /> 
+            <h:outputText value="#{fileViewBean.fileView.frdate}" />  
+
+            <h:outputText value="File Status :" /> 
+            <h:outputText value="#{fileViewBean.fileView.ffsid.fsname}" /> 
+            
+        </h:panelGrid>
+
+        <p:separator/> 
+        <p:outputLabel value="Permission Groups : "/>
+        <p:separator/> 
+        <p:dataTable var="g" value="#{fileViewBean.fileView.groupSharedCollection}" editable="true">  
+            <p:column headerText="Group Name">  
+                <h:outputText value="#{g.gsgid.gname}" />  
+            </p:column>  
+        </p:dataTable>
+        <p:separator/> 
+        <p:outputLabel value="Tags : "/>
+        <p:separator/> 
+        <p:dataTable var="t" value="#{fileViewBean.fileView.tagsCollection}" editable="true">  
+            <p:column headerText="Tag">  
+                <h:outputText value="#{t.tname}" />  
+            </p:column>      
+        </p:dataTable>
+        <p:separator/> 
+        <p:outputLabel value="Comments : "/>
+        <p:separator/> 
+        <p:dataTable id="commentTable" var="c" value="#{fileViewBean.fileView.commentsCollection}" editable="true">  
+            <p:column headerText="Title">  
+                <h:outputText value="#{c.ctitle}" />  
+            </p:column>  
+            <p:column headerText="Description">  
+                <h:outputText escape="false"  value="#{c.cdescription}" />  
+            </p:column>  
+            <p:column headerText="Date">  
+                <h:outputText value="#{c.cdate}" />  
+            </p:column>  
+            <p:column headerText="Author">  
+                <h:outputText value="#{c.cuid.uname} #{c.cuid.usurname}" />  
+            </p:column>
+
+        </p:dataTable>
+
+        <h:form>
+            <h:panelGrid id="grid" styleClass="panelGridCenter" columns="2" cellpadding="10">  
+
+                <h:outputText value="Comments Title : *" />  
+                <p:inputText id="name" value="#{commentBean.title}" style="width: 600px;"/>  
+
+
+                <h:outputText value="Comments Description : *" />  
+                <p:editor id="editor" value="#{commentBean.description}" width="600"/> 
+
+
+
+                <f:facet name="footer">  
+                    <p:commandButton ajax="false" id="submitButton" value="Send Comment" action="#{commentBean.sendComment}"  style="margin:0" update="grid, :commentTable">
+                        <f:param name="userID" value="#{userBean.id}" />
+                        <f:param name="fileID" value="#{fileViewBean.fileID}" />
+                    </p:commandButton>
+                </f:facet>
+            </h:panelGrid>
+        </h:form>
+    </h:body>
+</html>
+
