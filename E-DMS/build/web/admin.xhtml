@@ -60,7 +60,12 @@
                 <p:menuitem styleClass="menu" value="Help" icon="ui-icon-help"/>
 
                 <f:facet name="options">
-                    <p:inputText placeholder="Search File" style="margin-right:10px"/>
+                    <p:inputText placeholder="Search File Tag" style="margin-right:10px;" 
+                                 value="#{searchBean.tag}"/>
+                        
+                    <p:commandButton action="#{searchBean.search}" value="Search" icon="ui-icon-search">
+                        <f:param name="tag" value="#{searchBean.tag}"/>
+                    </p:commandButton>
                     <p:outputLabel value="#{fileBean.user.name} #{fileBean.user.surname} "/>
                     <p:commandButton id="submitButton" action="#{userBean.logout}" value="Logout" icon="ui-icon-extlink" />  
                 </f:facet>  
@@ -129,7 +134,7 @@
                             <p:column headerText="Department">
                                 <ui:repeat value="#{u.groupsCollection}" var="group">
                                     #{group.gname} #{userBean.commaPrint(u.groupsCollection)}
-                                    
+
                                 </ui:repeat>
                             </p:column>  
                             <p:column style="width:6%"> 

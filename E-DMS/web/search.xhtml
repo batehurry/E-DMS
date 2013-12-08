@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>E-DMS</title>
+        <style>
+            .tabViewCenter {
+
+                margin: 100px auto;
+                width: 960px;
+            }
+
+            .panelGridCenter {
+                margin: 0 auto;
+
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <p:outputLabel value="search result for : #{searchBean.tag}" />
+        <h:form> 
+                    <h:panelGrid columns="1" style="width: 100%;">  
+
+                        <p:dataTable id="fileDataTable"  var="f" value="#{searchBean.files}" editable="true" 
+                                     rowStyleClass="#{f.ffsid.fsid eq 1 ? 'acil' : 'normal'}">  
+                            <p:column headerText="File Name">  
+                                <h:outputText value="#{f.fname}" />  
+                            </p:column>  
+
+                            <p:column headerText="Description">  
+                                <h:outputText value="#{f.fdescription}" />  
+                            </p:column>  
+
+                            <p:column headerText="Path">  
+                                <h:outputText value="#{f.fpath}" />  
+                            </p:column>  
+
+                            <p:column headerText="Date">  
+                                <h:outputText value="#{f.frdate}" />  
+                            </p:column>  
+                            <p:column style="width:6%"> 
+                                <p:panelGrid columns="4">
+                                    <p:commandButton title="View" action="#{fileBean.showFileView}" icon="ui-icon-document">
+                                        <f:param name="fileID" value="#{f.fid}" />
+                                    </p:commandButton>
+                                    <p:commandButton id="downloadLink" title="Download" icon="ui-icon-circle-arrow-s" ajax="false" actionListener="#{fileBean.prepDownload(f.fpath)}">
+                                        <p:fileDownload value="#{fileBean.download}" />
+                                    </p:commandButton>
+                                    <p:commandButton title="Edit" icon="ui-icon-pencil"/>
+                                    <p:commandButton title="Delete" ajax="true" update="fileDataTable" action="#{fileBean.remove(f)}" icon="ui-icon-trash">
+                                        <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  
+                                    </p:commandButton> 
+                                </p:panelGrid>
+                            </p:column>
+                        </p:dataTable>  
+
+                    </h:panelGrid>  
+                </h:form>
+    </h:body>
+</html>
+
