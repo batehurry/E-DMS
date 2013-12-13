@@ -16,5 +16,6 @@ import java.util.List;
 public interface GroupSharedDaoInterface {
     List<GroupShared> getMyGroupShared(int id);
     void addGroupsShared(Files file,List<Groups> groupID);
-    
+    void editGroupsShared(Files file, List<Groups> groupID);
+    void removeGroupsShared(Files file);
 }

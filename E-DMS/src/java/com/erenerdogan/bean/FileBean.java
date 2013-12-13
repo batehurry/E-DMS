@@ -206,12 +206,20 @@ public class FileBean implements Serializable {
         f.setFfsid(new FileStatusDaoImp().getFileStatus(fileStatus.getFileStatusId()));
 
         new FilesDaoImpl().uploadFile(f);
-
+        // tag ekleniyor db ye
         if (tags != null && tags.size() > 0) {
             for (String tag : tags) {
                 new TagsDaoImpl().addTags(f, tag);
             }
         }
+        
+        // title tag olarak db ye ekleniyor
+        String[] titleTag = fileName.split(" ");
+        new TagsDaoImpl().addTags(f, fileName); // tamamı
+        for (String tag : titleTag) {
+            new TagsDaoImpl().addTags(f, tag); // parçası
+        }
+        
 
         List<String> target = group.getPermissions().getTarget();
         List<Groups> gr = new GroupsDaoImpl().getAllGroups();
@@ -270,5 +278,12 @@ public class FileBean implements Serializable {
     
     public void remove(Files file){
         new FilesDaoImpl().deleteFile(file.getFid());
+    }
+    
+    public String fileEdit(){
+        if (fileID == null) {
+            return "admin?faces-redirect=true";
+        }
+        return "fileEdit?fileID="+fileID+"faces-redirect=true";
     }
 }

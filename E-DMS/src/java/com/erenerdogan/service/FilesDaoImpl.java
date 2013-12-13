@@ -66,6 +66,14 @@ public class FilesDaoImpl implements FilesDaoInterface{
         et.commit();
         em.close();
     }
+
+    @Override
+    public void editFile(Files file) {
+        EntityTransaction et = em.getTransaction();
+        et.begin();
+        em.merge(file);
+        et.commit();
+    }
     
     
 }

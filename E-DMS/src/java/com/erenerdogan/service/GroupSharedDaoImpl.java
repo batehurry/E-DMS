@@ -65,4 +65,22 @@ public class GroupSharedDaoImpl implements GroupSharedDaoInterface {
         em.close();
         System.out.println("AddGroupsShared Bitti.");
     }
+
+    @Override
+    public void editGroupsShared(Files file, List<Groups> groupID) {
+        removeGroupsShared(file);
+        addGroupsShared(file, groupID);
+    }
+
+    @Override
+    public void removeGroupsShared(Files file) {
+        List<GroupShared> gs = (List<GroupShared>) file.getGroupSharedCollection();
+        EntityTransaction et = em.getTransaction();
+        et.begin();
+        for (GroupShared groupShared : gs) {
+            em.remove(em.merge(groupShared));
+        }
+        et.commit();
+
+    }
 }

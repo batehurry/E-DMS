@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>E-DMS</title>
+        <style>
+            .tabViewCenter {
+
+                margin: 100px auto;
+                width: 960px;
+            }
+
+            .panelGridCenter {
+                margin: 0 auto;
+
+            }
+        </style>
+    </h:head>
+    <h:body>
+
+        #{fileEditBean.fileID}<br/>
+
+        <h:form enctype="multipart/form-data">
+            <h:panelGrid columns="2" cellpadding="10">  
+                <p:outputLabel value="File Name : "/>
+                <p:inputText value="#{fileEditBean.file.fname}"/>
+
+                <p:outputLabel value="Description :" />
+                <p:inputTextarea rows="6" cols="50" value="#{fileEditBean.file.fdescription}"/>
+
+                <p:outputLabel value="Status :"/>
+                <p:selectOneMenu value="#{fileEditBean.fileStatus.fileStatusId}" >  
+                    <f:selectItem itemLabel="#{fileEditBean.fileStatusName}" itemValue="" />  
+                    <f:selectItems value="#{fileEditBean.fileStatus.fileStatusMap}" /> 
+                </p:selectOneMenu>  
+
+                <p:outputLabel value="Permissions :"/>
+                <p:pickList id="pickList" value="#{fileEditBean.permissions}" var="city"   
+                            itemLabel="#{city}" itemValue="#{city}" />
+
+                <p:outputLabel value="Tags :"/>
+                <p:autoComplete  value="#{fileEditBean.tags}" completeMethod="#{fileEditBean.complete}" multiple="true"/> 
+                
+
+                <p:commandButton value="Save" action="#{fileEditBean.fileEditSave}" ajax="false">
+                    <f:param name="fileID" value="#{fileBean.fileID}" />
+                </p:commandButton>
+            </h:panelGrid>  
+
+        </h:form>
+
+    </h:body>
+</html>
+

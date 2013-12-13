@@ -6,6 +6,7 @@ package com.erenerdogan.service;
 
 import com.erenerdogan.entities.Files;
 import com.erenerdogan.entities.Tags;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -35,6 +36,28 @@ public class TagsDaoImpl implements TagsDaoInterface{
         em.persist(tags);
         et.commit();
         em.close();
+    }
+
+    @Override
+    public void editTags(Files file, String tag) {
+        Tags tags = new Tags();
+        tags.setTfid(file);
+        tags.setTname(tag);
+        EntityTransaction et = em.getTransaction();
+        et.begin();
+        em.merge(tags);
+        et.commit();
+    }
+
+    @Override
+    public void removeFileTags(Files file) {
+        List<Tags> tags = (List<Tags>) em.find(Files.class, file.getFid()).getTagsCollection();
+        EntityTransaction et = em.getTransaction();
+        et.begin();
+        for (Tags tags1 : tags) {
+            em.remove(tags1);
+        }
+        et.commit();
     }
     
 }

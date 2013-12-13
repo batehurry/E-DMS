@@ -12,4 +12,6 @@ import com.erenerdogan.entities.Files;
  */
 public interface TagsDaoInterface {
     void addTags(Files file, String tag);
+    void editTags(Files file,String tag);
+    void removeFileTags(Files file);
 }

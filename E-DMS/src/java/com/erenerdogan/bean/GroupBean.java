@@ -4,6 +4,7 @@
  */
 package com.erenerdogan.bean;
 
+import com.erenerdogan.entities.GroupShared;
 import com.erenerdogan.entities.Groups;
 import com.erenerdogan.service.GroupsDaoImpl;
 import java.io.Serializable;

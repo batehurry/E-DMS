@@ -17,4 +17,5 @@ public interface FilesDaoInterface {
     void uploadFile(Files file);
     Files getFileView(int id);    
     void deleteFile(int fileID);
+    void editFile(Files file);
 }
