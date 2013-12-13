@@ -9,6 +9,7 @@ import com.erenerdogan.entities.Files;
 import com.erenerdogan.entities.Users;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -46,5 +47,25 @@ public class CommentDaoImp implements CommentDaoInterface {
         em.persist(c);
         et.commit();
         em.close();
+    }
+
+    @Override
+    public boolean removeComment(int userID, int commentID) {
+        Comments c = em.find(Comments.class, commentID);
+        if (c.getCuid().getUid() == userID) {
+            EntityTransaction et = em.getTransaction();
+            et.begin();
+            em.remove(c);
+            et.commit();
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public List<Comments> getAllComment(int fileID) {
+        List<Comments> commentList = (List<Comments>) em.find(Files.class, fileID).getCommentsCollection();
+        return commentList;
     }
 }

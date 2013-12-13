@@ -31,7 +31,8 @@ public class FileViewBean implements Serializable{
                 fc.getExternalContext().getRequestParameterMap();
         fileID = params.get("fileID");
         System.out.println("File ID : "+ fileID);
-        fileView = new FilesDaoImpl().getFileView(Integer.parseInt(fileID));
+        if(fileID!= null)
+            fileView = new FilesDaoImpl().getFileView(Integer.parseInt(fileID));
     }
 
     public String getFileID() {

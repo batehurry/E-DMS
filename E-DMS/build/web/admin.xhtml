@@ -232,7 +232,9 @@
                                     <p:commandButton  title="Download" icon="ui-icon-circle-arrow-s" ajax="false" actionListener="#{fileBean.prepDownload(f.fpath)}">
                                         <p:fileDownload value="#{fileBean.download}" />
                                     </p:commandButton>
-                                    <p:commandButton title="Edit" icon="ui-icon-pencil"/>
+                                    <p:commandButton title="Edit" action="#{fileBean.fileEdit}" icon="ui-icon-pencil">
+                                        <f:param name="fileID" value="#{a.fid}" />
+                                    </p:commandButton>
                                     <p:commandButton title="Delete" ajax="true" update="allFileDataTable" action="#{fileBean.remove(a)}" icon="ui-icon-trash">
                                         <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  
                                     </p:commandButton>
