@@ -22,7 +22,7 @@
         </style>
     </h:head>
     <h:body>
-        
+
         <h:panelGrid styleClass="panelGridCenter" columns="2" cellpadding="10">  
             <h:outputText value="File Name :" /> 
             <h:outputText value="#{fileViewBean.fileView.fname}" />  
@@ -31,10 +31,20 @@
             <h:outputText value="#{fileViewBean.fileView.fdescription}" />  
 
             <h:outputText value="File Upload Date :" /> 
-            <h:outputText value="#{fileViewBean.fileView.frdate}" />  
+            <h:outputText value="#{fileViewBean.fileView.frdate}"  >
+                <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2"/> 
+            </h:outputText>  
+
+            <h:outputText value="File Deadline Date :" /> 
+            <h:outputText value="#{fileViewBean.fileView.fdeadline}"  >
+                <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2"/> 
+            </h:outputText> 
 
             <h:outputText value="File Status :" /> 
             <h:outputText value="#{fileViewBean.fileView.ffsid.fsname}" /> 
+            
+            <h:outputText value="Archived :" /> 
+            <h:outputText value="#{fileViewBean.fileView.fstatus eq 1 ? 'YES' : 'NO'}" />
 
         </h:panelGrid>
 
@@ -80,7 +90,7 @@
                         <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  
                     </p:commandButton>  
 
-                    
+
                 </p:panelGrid>
             </p:column>
         </p:dataTable>

@@ -54,15 +54,16 @@
 
 
                 <p:menuitem styleClass="menu" value="Dashboard" action="admin?faces-redirect=true" icon="ui-icon-home"/> 
-                <p:menuitem styleClass="menu" value="Settings" action="settings?faces-redirect=true" icon="ui-icon-gear">
+                <p:menuitem styleClass="menu" value="My Profile" action="settings?faces-redirect=true" icon="ui-icon-gear">
 
                 </p:menuitem>
-                <p:menuitem styleClass="menu" value="Help" icon="ui-icon-help"/>
+                <p:menuitem styleClass="menu" value="Deadline" action="deadline?faces-redirect=true" icon="ui-icon-calculator"/>
+                <p:menuitem styleClass="menu" value="Archive"  action="archive?faces-redirect=true" icon="ui-icon-key"/>
 
                 <f:facet name="options">
                     <p:inputText placeholder="Search File Tag" style="margin-right:10px;" 
                                  value="#{searchBean.tag}"/>
-                        
+
                     <p:commandButton action="#{searchBean.search}" value="Search" icon="ui-icon-search">
                         <f:param name="tag" value="#{searchBean.tag}"/>
                     </p:commandButton>
@@ -91,8 +92,16 @@
                                 <h:outputText value="#{f.fpath}" />  
                             </p:column>  
 
-                            <p:column headerText="Date">  
-                                <h:outputText value="#{f.frdate}" />  
+                            <p:column headerText="Deadline Date">  
+                                <h:outputText value="#{f.fdeadline}" >
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2"/> 
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Upload Date">  
+                                <h:outputText value="#{f.frdate}" >
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2"/> 
+                                </h:outputText>  
                             </p:column>  
                             <p:column style="width:6%"> 
                                 <p:panelGrid columns="4">
@@ -174,6 +183,9 @@
                         <p:outputLabel value="Description :" />
                         <p:inputTextarea rows="6" cols="50" value="#{fileBean.description}"/>
 
+                        <p:outputLabel value="Deadline :"/>
+                        <p:calendar value="#{fileBean.deadline}" pattern="dd/MM/yyyy HH:mm" />
+
                         <p:outputLabel value="Status :"/>
                         <p:selectOneMenu value="#{fileBean.fileStatus.fileStatusId}" >  
                             <f:selectItem itemLabel="Select Status" itemValue="" />  
@@ -192,17 +204,6 @@
 
                 </h:form>
             </p:tab>  
-            <p:tab title="PASSWORD CHANGE">
-                <h:form>
-                    <p:panelGrid columns="2">
-                        <p:outputLabel value="Old Password :" />
-                        <p:password value="#{userBean.oldPassword}"/>
-                        <p:outputLabel value="New Password :"/>
-                        <p:password value="#{userBean.newPassword}"/>
-                        <p:commandButton value="Submit" actionListener="#{userBean.changePassword}" ajax="false"/>
-                    </p:panelGrid>
-                </h:form>
-            </p:tab>
             <p:tab title="ALL FİLES">
                 <h:form> 
                     <h:panelGrid columns="1" style="width: 100%;">  
@@ -221,15 +222,23 @@
                                 <h:outputText value="#{a.fpath}" />  
                             </p:column>  
 
-                            <p:column headerText="Date">  
-                                <h:outputText value="#{a.frdate}" />  
+                            <p:column headerText="Deadline Date">  
+                                <h:outputText value="#{a.fdeadline}" >
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2"/> 
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="Upload Date">  
+                                <h:outputText value="#{a.frdate}" >
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2" /> 
+                                </h:outputText>  
                             </p:column>  
                             <p:column style="width:6%"> 
                                 <p:panelGrid columns="4">
                                     <p:commandButton title="View" action="#{fileBean.showFileView}" icon="ui-icon-document">
                                         <f:param name="fileID" value="#{a.fid}" />
                                     </p:commandButton>
-                                    <p:commandButton  title="Download" icon="ui-icon-circle-arrow-s" ajax="false" actionListener="#{fileBean.prepDownload(f.fpath)}">
+                                    <p:commandButton  title="Download" icon="ui-icon-circle-arrow-s" ajax="false" actionListener="#{fileBean.prepDownload(a.fpath)}">
                                         <p:fileDownload value="#{fileBean.download}" />
                                     </p:commandButton>
                                     <p:commandButton title="Edit" action="#{fileBean.fileEdit}" icon="ui-icon-pencil">

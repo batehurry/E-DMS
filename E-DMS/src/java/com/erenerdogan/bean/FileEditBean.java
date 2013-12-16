@@ -44,6 +44,7 @@ public class FileEditBean {
     private String fileStatusName;
     private String fileName;
     private String fileDescription;
+    private boolean fileArchive;
 
     public FileEditBean() {
 
@@ -69,6 +70,10 @@ public class FileEditBean {
             System.out.println("File Edit Bean Const 1");
             fileName = file.getFname();
             fileDescription = file.getFdescription();
+            if(file.getFstatus()==1)
+                fileArchive=true;
+            else 
+                fileArchive=false;
             if (file.getFfsid() != null) {
                 fileStatusName = file.getFfsid().getFsname();
             }
@@ -81,6 +86,16 @@ public class FileEditBean {
 
         }
     }
+
+    public boolean isFileArchive() {
+        return fileArchive;
+    }
+
+    public void setFileArchive(boolean fileArchive) {
+        this.fileArchive = fileArchive;
+    }
+    
+    
 
     public UserBean getUser() {
         return user;
@@ -171,6 +186,11 @@ public class FileEditBean {
         if (new FileStatusDaoImp().getFileStatus(fileStatus.getFileStatusId()) != null) {
             file.setFfsid(new FileStatusDaoImp().getFileStatus(fileStatus.getFileStatusId()));
         }
+        if(fileArchive== true)
+            file.setFstatus(1);
+        else
+            file.setFstatus(0);
+        
         new FilesDaoImpl().editFile(file);
         System.out.println("Save2");
         new TagsDaoImpl().removeFileTags(file);

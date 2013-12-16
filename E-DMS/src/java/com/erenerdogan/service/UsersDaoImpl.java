@@ -33,7 +33,7 @@ public class UsersDaoImpl implements UsersDaoInterface {
         if (user == null) {
             return null;
         }
-        if (user.getUpassword().equals(password)) {
+        if (user.getUpassword().equals(password) && user.getUstatus()==1) {
             return user;
         }
         return null;
@@ -50,6 +50,7 @@ public class UsersDaoImpl implements UsersDaoInterface {
             Date d = new Date();
             user.setUrdate(new Timestamp(d.getTime()));
             user.setUstatus(0);
+            user.setUauthorized(0);
             EntityTransaction et = em.getTransaction();
             et.begin();
             em.persist(user);

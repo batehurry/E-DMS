@@ -49,6 +49,17 @@ public class FileBean implements Serializable {
     private String description;
     private Date date;
     private DefaultStreamedContent download;
+    private Date deadline;
+
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
+    }
+    
+    
   
     public void setDownload(DefaultStreamedContent download) {
         this.download = download;
@@ -195,6 +206,8 @@ public class FileBean implements Serializable {
         Files f = new Files();
         f.setFname(fileName);
         f.setFdescription(description);
+        f.setFdeadline(deadline);
+        f.setFstatus(0);
         Timestamp t = new Timestamp(new Date().getTime());
         f.setFrdate(t);
         String path = fileUpload(upload);

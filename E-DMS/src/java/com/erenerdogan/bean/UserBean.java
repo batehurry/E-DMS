@@ -39,11 +39,20 @@ public class UserBean implements Serializable {
     private List<Groups> myGroups;
     private List<Users> allUser;
     private boolean editable;
+    private int auth;
     
 
     public UserBean() {
     }
 
+    public int getAuth() {
+        return auth;
+    }
+
+    public void setAuth(int auth) {
+        this.auth = auth;
+    }
+    
     public boolean isEditable() {
         return editable;
     }
@@ -137,6 +146,7 @@ public class UserBean implements Serializable {
             name = user.getUname();
             surname = user.getUsurname();
             myGroups = new GroupsDaoImpl().getUserGroups(id);
+            auth = user.getUauthorized();
             FacesContext context = FacesContext.getCurrentInstance();
 
 
@@ -144,7 +154,10 @@ public class UserBean implements Serializable {
                 context.addMessage(null, new FacesMessage("Login Error", "Name or Surname Mistake"));
             } else {
                 context.addMessage(null, new FacesMessage("Login Successful", "Hello " + name + " " + surname));
-                return "admin?faces-redirect=true";
+                if(auth == 1)
+                    return "admin?faces-redirect=true";
+                else
+                    return "user?faces-redirect=true";
             }
         }
         return "index?faces-redirect=true";

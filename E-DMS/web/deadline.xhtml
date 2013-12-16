@@ -20,11 +20,13 @@
         </style>
     </h:head>
     <h:body>
-        <p:outputLabel value="search result for : #{searchBean.tag}" />
+        
+        
+        <h:outputText value="File Deadline :" />
         <h:form> 
                     <h:panelGrid columns="1" style="width: 100%;">  
 
-                        <p:dataTable id="fileDataTable"  var="f" value="#{searchBean.files}" editable="true" 
+                        <p:dataTable id="deadlineDataTable"  var="f" value="#{deadlineBean.deadlineFiles}" editable="true" 
                                      rowStyleClass="#{f.ffsid.fsid eq 1 ? 'acil' : 'normal'}">  
                             <p:column headerText="File Name">  
                                 <h:outputText value="#{f.fname}" />  
@@ -37,9 +39,17 @@
                             <p:column headerText="Path">  
                                 <h:outputText value="#{f.fpath}" />  
                             </p:column>  
+                            
+                            <p:column headerText="Deadline">  
+                                <h:outputText value="#{f.fdeadline}" >
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2"/> 
+                                </h:outputText>  
+                            </p:column> 
 
                             <p:column headerText="Date">  
-                                <h:outputText value="#{f.frdate}" />  
+                                <h:outputText value="#{f.frdate}" >
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2"/> 
+                                </h:outputText>  
                             </p:column>  
                             <p:column style="width:6%"> 
                                 <p:panelGrid columns="4">
@@ -49,6 +59,12 @@
                                     <p:commandButton id="downloadLink" title="Download" icon="ui-icon-circle-arrow-s" ajax="false" actionListener="#{fileBean.prepDownload(f.fpath)}">
                                         <p:fileDownload value="#{fileBean.download}" />
                                     </p:commandButton>
+                                    <p:commandButton title="Edit" action="#{fileBean.fileEdit}" icon="ui-icon-pencil">
+                                        <f:param name="fileID" value="#{f.fid}" />
+                                    </p:commandButton>
+                                    <p:commandButton title="Delete" ajax="true" update="deadlineDataTable" action="#{fileBean.remove(f)}" icon="ui-icon-trash">
+                                        <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  
+                                    </p:commandButton> 
                                 </p:panelGrid>
                             </p:column>
                         </p:dataTable>  

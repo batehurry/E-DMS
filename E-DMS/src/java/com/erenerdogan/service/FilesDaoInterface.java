@@ -18,4 +18,6 @@ public interface FilesDaoInterface {
     Files getFileView(int id);    
     void deleteFile(int fileID);
     void editFile(Files file);
+    List<Files> getAllDeadline();
+    List<Files> getAllArchived();
 }

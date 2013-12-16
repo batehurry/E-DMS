@@ -40,6 +40,7 @@ public class PendingUserBean implements Serializable {
     private String name;
     private String surname;
     private String email;
+    private boolean auth;
 
     public PendingUserBean() {
         System.out.println("Pending Construct");
@@ -60,6 +61,16 @@ public class PendingUserBean implements Serializable {
     public void setPermissions(DualListModel<String> permissions) {
         this.permissions = permissions;
     }
+
+    public boolean isAuth() {
+        return auth;
+    }
+
+    public void setAuth(boolean auth) {
+        this.auth = auth;
+    }
+    
+    
 
     public String getEmail() {
         return email;
@@ -110,6 +121,10 @@ public class PendingUserBean implements Serializable {
         surname = user.getUsurname();
         email = user.getUemail();
         status = new UsersDaoImpl().getUserStatus(userID);
+        if(user.getUauthorized()==1)
+            auth = true;
+        else
+            auth = false;
         System.out.println(status);
         List<Groups> group = (List<Groups>) user.getGroupsCollection();
         System.out.println("Groups Size :" + group.size());
@@ -159,6 +174,10 @@ public class PendingUserBean implements Serializable {
         user.setUname(name);
         user.setUsurname(surname);
         user.setUemail(email);
+        if(auth==true)
+            user.setUauthorized(1);
+        else
+            user.setUauthorized(0);
         Set<Groups> myGroups = new LinkedHashSet<Groups>();
         List<Groups> allGroups = new GroupsDaoImpl().getAllGroups();
         for (String string : permissions.getTarget()) {

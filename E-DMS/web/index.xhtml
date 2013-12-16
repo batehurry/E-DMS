@@ -25,7 +25,7 @@
 
             <p:tab id="tab1" title="Sign In">  
                 <h:form id="login">
-                    <p:growl id="growl" showDetail="true" sticky="true" />  
+                    <p:growl id="growl1" showDetail="true" sticky="true" />  
                     <h:panelGrid id="grid" styleClass="panelGridCenter" columns="3" cellpadding="10">  
                         <f:facet name="header">  
                             <p:graphicImage style="margin: 10px 100px 10px 100px;" value="/img/logo.png" />
@@ -45,7 +45,7 @@
                         <p:password id="password" value="#{userBean.password}" required="true" label="Password" requiredMessage="Please enter your password."/>  
                         <p:message for="password" display="tooltip"/>
                         <f:facet name="footer">  
-                            <p:commandButton id="submitButton" value="Login" action="#{userBean.doLogin}"  style="margin:0" update="grid,growl"/>  
+                            <p:commandButton id="submitButton" value="Login" action="#{userBean.doLogin}"  style="margin:0" update="grid,growl1"/>  
                         </f:facet> 
 
                     </h:panelGrid>  

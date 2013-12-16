@@ -20,6 +20,7 @@ import javax.persistence.*;
     @NamedQuery(name = "Files.findByFid", query = "SELECT f FROM Files f WHERE f.fid = :fid"),
     @NamedQuery(name = "Files.findByFname", query = "SELECT f FROM Files f WHERE f.fname = :fname"),
     @NamedQuery(name = "Files.findByFrdate", query = "SELECT f FROM Files f WHERE f.frdate = :frdate"),
+    @NamedQuery(name = "Files.findByFdeadline", query = "SELECT f FROM Files f WHERE f.fdeadline <= :fdeadline"),
     @NamedQuery(name = "Files.findByFstatus", query = "SELECT f FROM Files f WHERE f.fstatus = :fstatus")})
 public class Files implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -39,6 +40,9 @@ public class Files implements Serializable {
     @Column(name = "frdate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date frdate;
+    @Column(name = "fdeadline")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fdeadline;
     @Column(name = "fstatus")
     private Integer fstatus;
     @OneToMany(mappedBy = "tfid")
@@ -89,6 +93,16 @@ public class Files implements Serializable {
     public void setFdescription(String fdescription) {
         this.fdescription = fdescription;
     }
+
+    public Date getFdeadline() {
+        return fdeadline;
+    }
+
+    public void setFdeadline(Date fdeadline) {
+        this.fdeadline = fdeadline;
+    }
+    
+    
 
     public Date getFrdate() {
         return frdate;

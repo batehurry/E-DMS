@@ -6,16 +6,12 @@ package com.erenerdogan.bean;
 
 import com.erenerdogan.entities.Groups;
 import com.erenerdogan.entities.Users;
-import com.erenerdogan.service.FilesDaoImpl;
 import com.erenerdogan.service.UsersDaoImpl;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 
 /**
  *

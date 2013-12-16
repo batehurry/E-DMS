@@ -54,6 +54,10 @@
                 <p:outputLabel value="Status : *" />  
                 <p:selectBooleanCheckbox id="status" value="#{pendingUserBean.status}" required="true" label="Status"/>
                 <p:message for="status" display="tooltip" />
+                
+                <p:outputLabel value="Authorized : " />  
+                <p:selectBooleanCheckbox id="authorized" value="#{pendingUserBean.auth}"  label="Authorized"/>
+                <p:message for="authorized" display="tooltip" />
 
                 <f:facet name="footer">  
                     <p:commandButton id="submitButton" value="Update User" action="#{pendingUserBean.updateUser}"  style="margin:0" update="grid">

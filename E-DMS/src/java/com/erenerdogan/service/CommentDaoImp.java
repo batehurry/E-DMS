@@ -52,7 +52,8 @@ public class CommentDaoImp implements CommentDaoInterface {
     @Override
     public boolean removeComment(int userID, int commentID) {
         Comments c = em.find(Comments.class, commentID);
-        if (c.getCuid().getUid() == userID) {
+        Users u = em.find(Users.class, userID);
+        if (c.getCuid().getUid() == userID || u.getUauthorized()==1) {
             EntityTransaction et = em.getTransaction();
             et.begin();
             em.remove(c);

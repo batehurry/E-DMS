@@ -44,6 +44,8 @@ public class Users implements Serializable {
     private Date urdate;
     @Column(name = "ustatus")
     private Integer ustatus;
+    @Column(name = "uauthorized")
+    private Integer uauthorized;
     @ManyToMany(mappedBy = "usersCollection")
     private Collection<Groups> groupsCollection;
     @OneToMany(mappedBy = "cuid")
@@ -114,6 +116,16 @@ public class Users implements Serializable {
     public void setUrdate(Date urdate) {
         this.urdate = urdate;
     }
+
+    public Integer getUauthorized() {
+        return uauthorized;
+    }
+
+    public void setUauthorized(Integer uauthorized) {
+        this.uauthorized = uauthorized;
+    }
+    
+    
 
     public Integer getUstatus() {
         return ustatus;

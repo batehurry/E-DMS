@@ -7,7 +7,9 @@ package com.erenerdogan.service;
 import com.erenerdogan.entities.Files;
 import com.erenerdogan.entities.GroupShared;
 import com.erenerdogan.entities.Users;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -33,7 +35,8 @@ public class FilesDaoImpl implements FilesDaoInterface{
         List<GroupShared> listGroupShareds = new GroupSharedDaoImpl().getMyGroupShared(userID);
         List<Files> files = new ArrayList<Files>();
         for (GroupShared gs : listGroupShareds) {
-            files.add(gs.getGsfid());
+            if(gs.getGsfid().getFstatus()!=1)
+                files.add(gs.getGsfid());   
         }
         return files;
     }
@@ -74,6 +77,18 @@ public class FilesDaoImpl implements FilesDaoInterface{
         em.merge(file);
         et.commit();
     }
+
+    @Override
+    public List<Files> getAllDeadline() {
+        Timestamp t = new Timestamp(new Date().getTime());
+        return em.createNamedQuery("Files.findByFdeadline",Files.class).setParameter("fdeadline", t).getResultList();        
+    }
+
+    @Override
+    public List<Files> getAllArchived() {
+        return em.createNamedQuery("Files.findByFstatus",Files.class).setParameter("fstatus", 1).getResultList();
+    }
+    
     
     
 }

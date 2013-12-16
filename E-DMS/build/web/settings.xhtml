@@ -21,8 +21,8 @@
         </style>
     </h:head>
     <h:body>
-    <h:form>
-    
+        <h:form>
+
             <h:panelGrid id="grid" styleClass="panelGridCenter" columns="3" cellpadding="10">  
                 <f:facet name="header">  
                     <p:graphicImage style="margin: 10px 100px 10px 100px;" value="/img/logo.png" />
@@ -49,15 +49,26 @@
                 <p:selectManyMenu id="basic">  
                     <f:selectItems value="#{settings.myGroups}" var="g" itemLabel="#{g.gname}" itemValue="#{g.gname}" />
                 </p:selectManyMenu> 
-                
+
 
                 <f:facet name="footer">  
                     <p:commandButton id="submitButton" value="Update User" action="#{settings.updateMyProfile}"  style="margin:0" update="grid">
-                        
+
                     </p:commandButton>
                 </f:facet> 
             </h:panelGrid>  
         </h:form>
+        <h:panelGrid styleClass="panelGridCenter" columns="2" cellpadding="10">
+            <h:form>
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Old Password :" />
+                    <p:password value="#{userBean.oldPassword}"/>
+                    <p:outputLabel value="New Password :"/>
+                    <p:password value="#{userBean.newPassword}"/>
+                    <p:commandButton value="Change Password" actionListener="#{userBean.changePassword}" ajax="false"/>
+                </p:panelGrid>
+            </h:form>
+        </h:panelGrid>
     </h:body>
 </html>
 
