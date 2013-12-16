@@ -1,7 +1,7 @@
 E-DMS
 =====
 
-Document Management System (Döküman Yönetim Sistemi)
+Document Management System (Doküman Yönetim Sistemi)
 
 Gebze Yüksek Teknoloji Enstitüsü<br>
 BIL 495 Bitirme Çalışması I Projesi
