@@ -36,10 +36,11 @@ Yetkili:<br>
 7. Arşivlenen dokümanları görebilir, düzeltebilir veya silebilir.<br>
 8. Yetkili profilini ve şifresini değiştirebilir.<br>
 
-VERSİYON 1
-==========
-Kullanılan Teknolojiler<br>
-1. Mysql<br>
-2. JPA<br>
-3. Primefaces (bootstrap theme)<br>
-4. JSF<br>
+KULLANILAN TEKNOLOJİLER
+=======================
+1. Mysql 5.2 <br>
+2. JPA 2.0 (EclipseLink)<br>
+3. Primefaces 4.0 (bootstrap theme)<br>
+4. JSF 2.1 <br>
+5. Apache Tomcat 7.0.22<br>
+6. NetBeans IDE 7.1 <br>
