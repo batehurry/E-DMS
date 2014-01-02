@@ -6,13 +6,15 @@ package com.erenerdogan.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author eren
  */
 @Entity
-@Table(name = "groupshared")
+@Table(name = "GroupShared")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "GroupShared.findAll", query = "SELECT g FROM GroupShared g"),
     @NamedQuery(name = "GroupShared.findByGsid", query = "SELECT g FROM GroupShared g WHERE g.gsid = :gsid")})
@@ -23,12 +25,12 @@ public class GroupShared implements Serializable {
     @Basic(optional = false)
     @Column(name = "gsid")
     private Integer gsid;
-    @JoinColumn(name = "gsgid", referencedColumnName = "gid")
-    @ManyToOne
-    private Groups gsgid;
     @JoinColumn(name = "gsfid", referencedColumnName = "fid")
     @ManyToOne
     private Files gsfid;
+    @JoinColumn(name = "gsgid", referencedColumnName = "gid")
+    @ManyToOne
+    private Groups gsgid;
 
     public GroupShared() {
     }
@@ -45,20 +47,20 @@ public class GroupShared implements Serializable {
         this.gsid = gsid;
     }
 
-    public Groups getGsgid() {
-        return gsgid;
-    }
-
-    public void setGsgid(Groups gsgid) {
-        this.gsgid = gsgid;
-    }
-
     public Files getGsfid() {
         return gsfid;
     }
 
     public void setGsfid(Files gsfid) {
         this.gsfid = gsfid;
+    }
+
+    public Groups getGsgid() {
+        return gsgid;
+    }
+
+    public void setGsgid(Groups gsgid) {
+        this.gsgid = gsgid;
     }
 
     @Override

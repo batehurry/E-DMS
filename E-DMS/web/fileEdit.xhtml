@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"  
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>E-DMS</title>
+        <title>Yönetim Paneli</title>
         <style>
             .tabViewCenter {
 
@@ -17,47 +17,125 @@
                 margin: 0 auto;
 
             }
+
+            .menu
+            {
+                width: 190px !important;
+                margin-left:auto;
+                margin-right:auto;
+                padding: auto;
+                text-align: center;
+            }
+            
+            .menu2
+            {
+                width: 160px !important;
+                margin-left:auto;
+                margin-right:auto;
+                padding: auto;
+                text-align: center;
+            }
+            .menu3
+            {
+                width: 120px !important;
+                margin-left:auto;
+                margin-right:auto;
+                padding: auto;
+                text-align: center;
+            }
+
+            .acil{
+                background-color: red;
+            }
+
+            .normal{
+                background-color: lawngreen;
+            }
+            
+            .is{
+                background-color: #0099cc;
+            }
+
+            .dokuman{
+                background-color: #66ff66;
+            }
         </style>
+        <script type="text/javascript">  
+            function start() {  
+                PF('statusDialog').show();  
+            }  
+  
+            function stop() {  
+                PF('statusDialog').hide();  
+            }  
+        </script>
     </h:head>
     <h:body>
-
-        #{fileEditBean.fileID}<br/>
-
-        <h:form enctype="multipart/form-data">
-            <h:panelGrid columns="2" cellpadding="10">  
-                <p:outputLabel value="File Name : "/>
-                <p:inputText value="#{fileEditBean.file.fname}"/>
-
-                <p:outputLabel value="Description :" />
-                <p:inputTextarea rows="6" cols="50" value="#{fileEditBean.file.fdescription}"/>
-
-                <p:outputLabel value="Deadline :"/>
-                <p:calendar value="#{fileEditBean.file.fdeadline}" pattern="dd/MM/yyyy HH:mm" timeZone="GMT+2"/>
-
-                <p:outputLabel value="Status :"/>
-                <p:selectOneMenu value="#{fileEditBean.fileStatus.fileStatusId}" >  
-                    <f:selectItem itemLabel="#{fileEditBean.fileStatusName}" itemValue="" />  
-                    <f:selectItems value="#{fileEditBean.fileStatus.fileStatusMap}" /> 
-                </p:selectOneMenu>  
-
-                <p:outputLabel value="Archive : " />  
-                <p:selectBooleanCheckbox value="#{fileEditBean.fileArchive}" />
-
-                <p:outputLabel value="Permissions :"/>
-                <p:pickList id="pickList" value="#{fileEditBean.permissions}" var="city"   
-                            itemLabel="#{city}" itemValue="#{city}" />
-
-                <p:outputLabel value="Tags :"/>
-                <p:autoComplete  value="#{fileEditBean.tags}" completeMethod="#{fileEditBean.complete}" multiple="true"/> 
+        
+        <h:form>
+            <p:menubar> 
 
 
-                <p:commandButton value="Save" action="#{fileEditBean.fileEditSave}" ajax="false">
-                    <f:param name="fileID" value="#{fileBean.fileID}" />
-                </p:commandButton>
-            </h:panelGrid>  
+                <p:menuitem styleClass="menu" rendered="#{userBean.auth == 1}"  value="#{msg.panel}" action="admin?faces-redirect=true" icon="ui-icon-home"/> 
+                <p:menuitem styleClass="menu" rendered="#{userBean.auth == 0}" value="#{msg.panel}" action="user?faces-redirect=true" icon="ui-icon-home"/> 
+                <p:menuitem styleClass="menu2" value="#{msg.profil}" action="settings?faces-redirect=true" icon="ui-icon-gear">
 
+                </p:menuitem>
+                <p:menuitem styleClass="menu2" rendered="#{userBean.auth == 1}" value="#{msg.zamanasimi}" action="deadline?faces-redirect=true" icon="ui-icon-calculator"/>
+                <p:menuitem styleClass="menu3" rendered="#{userBean.auth == 1}" value="#{msg.arsiv}"  action="archive?faces-redirect=true" icon="ui-icon-key"/>
+                <p:menuitem styleClass="menu" rendered="#{userBean.auth == 1}" value="#{msg.hareket}"  action="hareketler?faces-redirect=true" icon="ui-icon-bookmark"/>
+                <f:facet name="options">
+                    <p:inputText placeholder="#{msg.aramayap}" style="margin-right:10px;" 
+                                 value="#{searchBean.tag}"/>
+
+                    <p:commandButton action="#{searchBean.search}" value="#{msg.ara}" icon="ui-icon-search">
+                        <f:param name="tag" value="#{searchBean.tag}"/>
+                    </p:commandButton>
+                    <p:outputLabel value="#{fileBean.user.name} #{fileBean.user.surname} "/>
+                    <p:commandButton id="submitButton" action="#{userBean.logout}" value="#{msg.cikis}" icon="ui-icon-extlink" />  
+                </f:facet>  
+            </p:menubar>
         </h:form>
+        
+        <p:accordionPanel multiple="true">  
+            <p:tab title="#{msg.dokumanduzelt}"> 
 
+                <h:form enctype="multipart/form-data">
+                    <h:panelGrid columns="2" cellpadding="10">  
+                        <p:outputLabel value="#{msg.dokumanformadi}"/>
+                        <p:inputText value="#{fileEditBean.file.fname}"/>
+
+                        <p:outputLabel value="#{msg.dokumanformaciklama}" />
+                        <p:inputTextarea rows="6" cols="50" value="#{fileEditBean.file.fdescription}"/>
+
+                        <p:outputLabel value="#{msg.dokumanformzamanasimi}"/>
+                        <p:calendar value="#{fileEditBean.file.fdeadline}" pattern="dd/MM/yyyy HH:mm" timeZone="GMT+2"/>
+
+                        <p:outputLabel value="#{msg.dokumanfromdurumu}"/>
+                        <p:selectOneMenu value="#{fileEditBean.fileStatus.fileStatusId}" >  
+                            <f:selectItem itemLabel="#{fileEditBean.fileStatusName}" itemValue="" />  
+                            <f:selectItems value="#{fileEditBean.fileStatus.fileStatusMap}" /> 
+                        </p:selectOneMenu>  
+
+                        <p:outputLabel value="#{msg.dokumanformarsivle}" />  
+                        <p:selectBooleanCheckbox value="#{fileEditBean.fileArchive}" />
+
+                        <p:outputLabel value="#{msg.dokumanformpaylasilacakgrup}"/>
+                        <p:pickList id="pickList" value="#{fileEditBean.permissions}" var="city"   
+                                    itemLabel="#{city}" itemValue="#{city}" />
+
+                        <p:outputLabel value="#{msg.dokumanformetiketler}"/>
+                        <p:autoComplete  value="#{fileEditBean.tags}" completeMethod="#{fileEditBean.complete}" multiple="true"/> 
+
+
+                        <p:commandButton value="#{msg.kaydet}" action="#{fileEditBean.fileEditSave}" ajax="false">
+                            <f:param name="fileID" value="#{fileBean.fileID}" />
+                        </p:commandButton>
+                    </h:panelGrid>  
+
+                </h:form>
+            </p:tab>
+        </p:accordionPanel>
     </h:body>
 </html>
 

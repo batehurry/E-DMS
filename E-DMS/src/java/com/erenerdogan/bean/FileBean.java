@@ -171,7 +171,6 @@ public class FileBean implements Serializable {
 
     public List<Files> getFiles() {
         System.out.println(user.getId());
-
         files = new FilesDaoImpl().myAllFiles(user.getId());
         return files;
     }
@@ -208,6 +207,10 @@ public class FileBean implements Serializable {
         f.setFdescription(description);
         f.setFdeadline(deadline);
         f.setFstatus(0);
+        Users u = new UsersDaoImpl().getUser(user.getId());
+        f.setFuid(u);
+        f.setFsubid(0);
+        f.setFtype(1);
         Timestamp t = new Timestamp(new Date().getTime());
         f.setFrdate(t);
         String path = fileUpload(upload);

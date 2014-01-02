@@ -167,7 +167,7 @@ public class PendingUserBean implements Serializable {
         return "edit?userID=" + userID + "&faces-redirect=true";
     }
 
-    public void updateUser() {
+    public String updateUser() {
         System.out.println("Name UserID : "+ name + " " + userID);
         user = new UsersDaoImpl().getUser(userID);
         System.out.println("user name " + user.getUname());
@@ -189,7 +189,7 @@ public class PendingUserBean implements Serializable {
                 }
             }
         }
-        
+        permissions.getTarget().clear();
         if (status == true) {
             System.out.println("status true");
             user.setUstatus(1);
@@ -202,5 +202,6 @@ public class PendingUserBean implements Serializable {
         new GroupsDaoImpl().editGroups(user, myGroups);
         System.out.println("Güncellendi");
         System.out.println("Target"+ permissions.getTarget().size());
+        return "admin?faces-redirect=true";
     }
 }

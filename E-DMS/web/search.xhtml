@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"  
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>E-DMS</title>
+        <title>Yönetim Paneli</title>
         <style>
             .tabViewCenter {
 
@@ -17,30 +17,119 @@
                 margin: 0 auto;
 
             }
+
+            .menu
+            {
+                width: 190px !important;
+                margin-left:auto;
+                margin-right:auto;
+                padding: auto;
+                text-align: center;
+            }
+            
+            .menu2
+            {
+                width: 160px !important;
+                margin-left:auto;
+                margin-right:auto;
+                padding: auto;
+                text-align: center;
+            }
+            .menu3
+            {
+                width: 120px !important;
+                margin-left:auto;
+                margin-right:auto;
+                padding: auto;
+                text-align: center;
+            }
+
+            .acil{
+                background-color: red;
+            }
+
+            .normal{
+                background-color: lawngreen;
+            }
+            
+            .is{
+                background-color: #0099cc;
+            }
+
+            .dokuman{
+                background-color: #66ff66;
+            }
         </style>
+        <script type="text/javascript">  
+            function start() {  
+                PF('statusDialog').show();  
+            }  
+  
+            function stop() {  
+                PF('statusDialog').hide();  
+            }  
+        </script>
     </h:head>
     <h:body>
-        <p:outputLabel value="search result for : #{searchBean.tag}" />
-        <h:form> 
+        
+        <h:form>
+            <p:menubar> 
+
+
+                <p:menuitem styleClass="menu" rendered="#{userBean.auth == 1}"  value="#{msg.panel}" action="admin?faces-redirect=true" icon="ui-icon-home"/> 
+                <p:menuitem styleClass="menu" rendered="#{userBean.auth == 0}" value="#{msg.panel}" action="user?faces-redirect=true" icon="ui-icon-home"/> 
+                <p:menuitem styleClass="menu2" value="#{msg.profil}" action="settings?faces-redirect=true" icon="ui-icon-gear">
+
+                </p:menuitem>
+                <p:menuitem styleClass="menu2" rendered="#{userBean.auth == 1}" value="#{msg.zamanasimi}" action="deadline?faces-redirect=true" icon="ui-icon-calculator"/>
+                <p:menuitem styleClass="menu3" rendered="#{userBean.auth == 1}" value="#{msg.arsiv}"  action="archive?faces-redirect=true" icon="ui-icon-key"/>
+                <p:menuitem styleClass="menu" rendered="#{userBean.auth == 1}" value="#{msg.hareket}"  action="hareketler?faces-redirect=true" icon="ui-icon-bookmark"/>
+                <f:facet name="options">
+                    <p:inputText placeholder="#{msg.aramayap}" style="margin-right:10px;" 
+                                 value="#{searchBean.tag}"/>
+
+                    <p:commandButton action="#{searchBean.search}" value="#{msg.ara}" icon="ui-icon-search">
+                        <f:param name="tag" value="#{searchBean.tag}"/>
+                    </p:commandButton>
+                    <p:outputLabel value="#{fileBean.user.name} #{fileBean.user.surname} "/>
+                    <p:commandButton id="submitButton" action="#{userBean.logout}" value="#{msg.cikis}" icon="ui-icon-extlink" />  
+                </f:facet>  
+            </p:menubar>
+        </h:form>
+        
+        <p:accordionPanel multiple="true">  
+            <p:tab title="#{msg.aramasonuclari}"> 
+                <h:form> 
                     <h:panelGrid columns="1" style="width: 100%;">  
 
                         <p:dataTable id="fileDataTable"  var="f" value="#{searchBean.files}" editable="true" 
                                      rowStyleClass="#{f.ffsid.fsid eq 1 ? 'acil' : 'normal'}">  
-                            <p:column headerText="File Name">  
+                            <p:column headerText="#{msg.dokumanadi}">  
                                 <h:outputText value="#{f.fname}" />  
                             </p:column>  
 
-                            <p:column headerText="Description">  
+                            <p:column headerText="#{msg.dokumanaciklama}">  
                                 <h:outputText value="#{f.fdescription}" />  
                             </p:column>  
 
-                            <p:column headerText="Path">  
-                                <h:outputText value="#{f.fpath}" />  
-                            </p:column>  
+                              
 
-                            <p:column headerText="Date">  
-                                <h:outputText value="#{f.frdate}" />  
+                            <p:column headerText="#{msg.dokumanzamanasimi}">  
+                                <h:outputText value="#{f.fdeadline}" >
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2"/> 
+                                </h:outputText>
+                            </p:column> 
+
+                            <p:column headerText="#{msg.dokumanyuklenmezamani}">  
+                                <h:outputText value="#{f.frdate}" >
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2"/> 
+                                </h:outputText>  
                             </p:column>  
+                            <p:column headerText="#{msg.dokumanyukleyenkullanici}">  
+                                <h:outputText value="#{f.fuid.uname} #{f.fuid.usurname}" >
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2"/> 
+                                </h:outputText>  
+                            </p:column>
                             <p:column style="width:6%"> 
                                 <p:panelGrid columns="4">
                                     <p:commandButton title="View" action="#{fileBean.showFileView}" icon="ui-icon-document">
@@ -55,6 +144,8 @@
 
                     </h:panelGrid>  
                 </h:form>
+            </p:tab>
+        </p:accordionPanel>
     </h:body>
 </html>
 

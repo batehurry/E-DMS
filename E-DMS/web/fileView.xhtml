@@ -7,7 +7,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
-        <title>E-DMS</title>
+        <title>Yönetim Paneli</title>
         <style>
             .tabViewCenter {
 
@@ -19,105 +19,185 @@
                 margin: 0 auto;
 
             }
+
+            .menu
+            {
+                width: 190px !important;
+                margin-left:auto;
+                margin-right:auto;
+                padding: auto;
+                text-align: center;
+            }
+            
+            .menu2
+            {
+                width: 160px !important;
+                margin-left:auto;
+                margin-right:auto;
+                padding: auto;
+                text-align: center;
+            }
+            .menu3
+            {
+                width: 120px !important;
+                margin-left:auto;
+                margin-right:auto;
+                padding: auto;
+                text-align: center;
+            }
+
+            .acil{
+                background-color: red;
+            }
+
+            .normal{
+                background-color: lawngreen;
+            }
+            
+            .is{
+                background-color: #0099cc;
+            }
+
+            .dokuman{
+                background-color: #66ff66;
+            }
         </style>
+        <script type="text/javascript">  
+            function start() {  
+                PF('statusDialog').show();  
+            }  
+  
+            function stop() {  
+                PF('statusDialog').hide();  
+            }  
+        </script>
     </h:head>
     <h:body>
-
-        <h:panelGrid styleClass="panelGridCenter" columns="2" cellpadding="10">  
-            <h:outputText value="File Name :" /> 
-            <h:outputText value="#{fileViewBean.fileView.fname}" />  
-
-            <h:outputText value="File Description :" /> 
-            <h:outputText value="#{fileViewBean.fileView.fdescription}" />  
-
-            <h:outputText value="File Upload Date :" /> 
-            <h:outputText value="#{fileViewBean.fileView.frdate}"  >
-                <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2"/> 
-            </h:outputText>  
-
-            <h:outputText value="File Deadline Date :" /> 
-            <h:outputText value="#{fileViewBean.fileView.fdeadline}"  >
-                <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2"/> 
-            </h:outputText> 
-
-            <h:outputText value="File Status :" /> 
-            <h:outputText value="#{fileViewBean.fileView.ffsid.fsname}" /> 
-            
-            <h:outputText value="Archived :" /> 
-            <h:outputText value="#{fileViewBean.fileView.fstatus eq 1 ? 'YES' : 'NO'}" />
-
-        </h:panelGrid>
-
-        <p:separator/> 
-        <p:outputLabel value="Permission Groups : "/>
-        <p:separator/> 
-        <p:dataTable var="g" value="#{fileViewBean.fileView.groupSharedCollection}" editable="true">  
-            <p:column headerText="Group Name">  
-                <h:outputText value="#{g.gsgid.gname}" />  
-            </p:column>  
-        </p:dataTable>
-        <p:separator/> 
-        <p:outputLabel value="Tags : "/>
-        <p:separator/> 
-        <p:dataTable var="t" value="#{fileViewBean.fileView.tagsCollection}" editable="true">  
-            <p:column headerText="Tag">  
-                <h:outputText value="#{t.tname}" />  
-            </p:column>      
-        </p:dataTable>
-        <p:separator/> 
-        <p:outputLabel value="Comments : "/>
-        <p:separator/> 
-        <p:dataTable id="commentTable" var="c" value="#{commentBean.comments}" editable="true">  
-            <p:column headerText="Title">  
-                <h:outputText value="#{c.ctitle}" />  
-            </p:column>  
-            <p:column headerText="Description">  
-                <h:outputText escape="false"  value="#{c.cdescription}" />  
-            </p:column>  
-            <p:column headerText="Date">  
-                <h:outputText value="#{c.cdate}" />  
-            </p:column>  
-            <p:column headerText="Author">  
-                <h:outputText value="#{c.cuid.uname} #{c.cuid.usurname}" />  
-            </p:column>
-            <p:growl id="growl" showDetail="true" sticky="true" />
-            <p:column style="width:3%"> 
-                <p:panelGrid columns="1">
-                    <p:commandButton title="Delete" ajax="true" update="commentTable,growl" action="#{commentBean.removeComment}" icon="ui-icon-trash">
-                        <f:param name="commentID" value="#{c.cid}" />
-                        <f:param name="userID" value="#{userBean.id}" />
-                        <f:param name="fileID" value="#{fileViewBean.fileID}" />
-                        <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  
-                    </p:commandButton>  
-
-
-                </p:panelGrid>
-            </p:column>
-        </p:dataTable>
-        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">  
-            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
-            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
-        </p:confirmDialog>
+        
         <h:form>
-            <h:panelGrid id="grid" styleClass="panelGridCenter" columns="2" cellpadding="10">  
-
-                <h:outputText value="Comments Title : *" />  
-                <p:inputText id="name" value="#{commentBean.title}" style="width: 600px;"/>  
+            <p:menubar> 
 
 
-                <h:outputText value="Comments Description : *" />  
-                <p:editor id="editor" value="#{commentBean.description}" width="600"/> 
+                <p:menuitem styleClass="menu" rendered="#{userBean.auth == 1}"  value="#{msg.panel}" action="admin?faces-redirect=true" icon="ui-icon-home"/> 
+                <p:menuitem styleClass="menu" rendered="#{userBean.auth == 0}" value="#{msg.panel}" action="user?faces-redirect=true" icon="ui-icon-home"/> 
+                <p:menuitem styleClass="menu2" value="#{msg.profil}" action="settings?faces-redirect=true" icon="ui-icon-gear">
 
+                </p:menuitem>
+                <p:menuitem styleClass="menu2" rendered="#{userBean.auth == 1}" value="#{msg.zamanasimi}" action="deadline?faces-redirect=true" icon="ui-icon-calculator"/>
+                <p:menuitem styleClass="menu3" rendered="#{userBean.auth == 1}" value="#{msg.arsiv}"  action="archive?faces-redirect=true" icon="ui-icon-key"/>
+                <p:menuitem styleClass="menu" rendered="#{userBean.auth == 1}" value="#{msg.hareket}"  action="hareketler?faces-redirect=true" icon="ui-icon-bookmark"/>
+                <f:facet name="options">
+                    <p:inputText placeholder="#{msg.aramayap}" style="margin-right:10px;" 
+                                 value="#{searchBean.tag}"/>
 
-
-                <f:facet name="footer">  
-                    <p:commandButton ajax="false" id="submitButton" value="Send Comment" action="#{commentBean.sendComment}"  style="margin:0" update="grid, :commentTable">
-                        <f:param name="userID" value="#{userBean.id}" />
-                        <f:param name="fileID" value="#{fileViewBean.fileID}" />
+                    <p:commandButton action="#{searchBean.search}" value="#{msg.ara}" icon="ui-icon-search">
+                        <f:param name="tag" value="#{searchBean.tag}"/>
                     </p:commandButton>
-                </f:facet>
-            </h:panelGrid>
+                    <p:outputLabel value="#{fileBean.user.name} #{fileBean.user.surname} "/>
+                    <p:commandButton id="submitButton" action="#{userBean.logout}" value="#{msg.cikis}" icon="ui-icon-extlink" />  
+                </f:facet>  
+            </p:menubar>
         </h:form>
+        
+        <p:accordionPanel multiple="true">  
+            <p:tab title="#{msg.dokumangoruntule}"> 
+
+                <h:panelGrid styleClass="panelGridCenter" columns="2" cellpadding="10">  
+                    <h:outputText value="#{msg.dokumanviewadi}" /> 
+                    <h:outputText value="#{fileViewBean.fileView.fname}" />  
+
+                    <h:outputText value="#{msg.dokumanviewdescription}" /> 
+                    <h:outputText value="#{fileViewBean.fileView.fdescription}" />  
+
+                    <h:outputText value="#{msg.dokumanviewyuklenmetarihi}" /> 
+                    <h:outputText value="#{fileViewBean.fileView.frdate}"  >
+                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2"/> 
+                    </h:outputText>  
+
+                    <h:outputText value="#{msg.dokumanviewzamanasimitarihi}" /> 
+                    <h:outputText value="#{fileViewBean.fileView.fdeadline}"  >
+                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2"/> 
+                    </h:outputText> 
+
+                    <h:outputText value="#{msg.dokumanviewdurumu}" /> 
+                    <h:outputText value="#{fileViewBean.fileView.ffsid.fsname}" /> 
+
+                    <h:outputText value="#{msg.dokumanviewarsiv}" /> 
+                    <h:outputText value="#{fileViewBean.fileView.fstatus eq 1 ? 'YES' : 'NO'}" />
+
+                </h:panelGrid>
+
+                 
+                <p:dataTable var="g" value="#{fileViewBean.fileView.groupSharedCollection}" editable="true">  
+                    <p:column headerText="#{msg.dokumanviewpaylasilangruplar}">  
+                        <h:outputText value="#{g.gsgid.gname}" />  
+                    </p:column>  
+                </p:dataTable>
+                
+                
+                <p:dataTable var="t" value="#{fileViewBean.fileView.tagsCollection}" editable="true">  
+                    <p:column headerText="#{msg.dokumanviewetiketleri}">  
+                        <h:outputText value="#{t.tname}" />  
+                    </p:column>      
+                </p:dataTable>
+            </p:tab>
+            <p:tab title="#{msg.dokumanviewyorumlari}">
+                
+                <p:dataTable id="commentTable" var="c" value="#{commentBean.comments}" editable="true">  
+                    <p:column headerText="#{msg.yorumbaslik}">  
+                        <h:outputText value="#{c.ctitle}" />  
+                    </p:column>  
+                    <p:column headerText="#{msg.yorumaciklama}">  
+                        <h:outputText escape="false"  value="#{c.cdescription}" />  
+                    </p:column>  
+                    <p:column headerText="#{msg.yorumtarihi}">  
+                        <h:outputText value="#{c.cdate}" > 
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="GMT+2"/> 
+                        </h:outputText>
+                    </p:column>  
+                    <p:column headerText="#{msg.yorumyazan}">  
+                        <h:outputText value="#{c.cuid.uname} #{c.cuid.usurname}" />  
+                    </p:column>
+                    <p:growl id="growl" showDetail="true" sticky="true" />
+                    <p:column style="width:3%"> 
+                        <p:panelGrid columns="1">
+                            <p:commandButton title="Delete" ajax="true" update="commentTable,growl" action="#{commentBean.removeComment}" icon="ui-icon-trash">
+                                <f:param name="commentID" value="#{c.cid}" />
+                                <f:param name="userID" value="#{userBean.id}" />
+                                <f:param name="fileID" value="#{fileViewBean.fileID}" />
+                                <p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />  
+                            </p:commandButton>  
+
+
+                        </p:panelGrid>
+                    </p:column>
+                </p:dataTable>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">  
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+                </p:confirmDialog>
+                <h:form>
+                    <h:panelGrid id="grid" styleClass="panelGridCenter" columns="2" cellpadding="10">  
+
+                        <h:outputText value="#{msg.yorumformbaslik}" />  
+                        <p:inputText id="name" value="#{commentBean.title}" style="width: 600px;"/>  
+
+
+                        <h:outputText value="#{msg.yorumformaciklama}" />  
+                        <p:editor id="editor" value="#{commentBean.description}" width="600"/> 
+
+
+
+                        <f:facet name="footer">  
+                            <p:commandButton ajax="false" id="submitButton2" value="#{msg.gonder}" action="#{commentBean.sendComment}"  style="margin:0" update="grid">
+                                <f:param name="userID" value="#{userBean.id}" />
+                                <f:param name="fileID" value="#{fileViewBean.fileID}" />
+                            </p:commandButton>
+                        </f:facet>
+                    </h:panelGrid>
+                </h:form>
+            </p:tab>
+        </p:accordionPanel>
     </h:body>
 </html>
 

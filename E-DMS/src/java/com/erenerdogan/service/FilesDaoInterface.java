@@ -20,4 +20,5 @@ public interface FilesDaoInterface {
     void editFile(Files file);
     List<Files> getAllDeadline();
     List<Files> getAllArchived();
+    List<Files> getSubFiles(int fileID);
 }

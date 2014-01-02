@@ -7,13 +7,16 @@ package com.erenerdogan.entities;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author eren
  */
 @Entity
-@Table(name = "filestatus")
+@Table(name = "FileStatus")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "FileStatus.findAll", query = "SELECT f FROM FileStatus f"),
     @NamedQuery(name = "FileStatus.findByFsid", query = "SELECT f FROM FileStatus f WHERE f.fsid = :fsid"),
@@ -53,6 +56,7 @@ public class FileStatus implements Serializable {
         this.fsname = fsname;
     }
 
+    @XmlTransient
     public Collection<Files> getFilesCollection() {
         return filesCollection;
     }

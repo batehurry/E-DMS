@@ -23,7 +23,7 @@
         
         <p:tabView id="tabView" styleClass="tabViewCenter">  
 
-            <p:tab id="tab1" title="Sign In">  
+            <p:tab id="tab1" title="#{msg.girisyap}">  
                 <h:form id="login">
                     <p:growl id="growl1" showDetail="true" sticky="true" />  
                     <h:panelGrid id="grid" styleClass="panelGridCenter" columns="3" cellpadding="10">  
@@ -31,7 +31,7 @@
                             <p:graphicImage style="margin: 10px 100px 10px 100px;" value="/img/logo.png" />
                         </f:facet>  
 
-                        <h:outputText value="E-Mail : *" />  
+                        <h:outputText value="#{msg.eposta}" />  
                         <p:inputText id="email" value="#{userBean.email}" required="true" label="E-Mail" 
                                      requiredMessage="Please enter your email address."
                                      validatorMessage="Invalid email format">
@@ -41,18 +41,18 @@
 
                         <p:message for="email" display="tooltip" />
 
-                        <h:outputText value="Password : *" />  
+                        <h:outputText value="#{msg.sifre}" />  
                         <p:password id="password" value="#{userBean.password}" required="true" label="Password" requiredMessage="Please enter your password."/>  
                         <p:message for="password" display="tooltip"/>
                         <f:facet name="footer">  
-                            <p:commandButton id="submitButton" value="Login" action="#{userBean.doLogin}"  style="margin:0" update="grid,growl1"/>  
+                            <p:commandButton id="submitButton" value="#{msg.girisyap}" action="#{userBean.doLogin}"  style="margin:0" update="grid,growl1"/>  
                         </f:facet> 
 
                     </h:panelGrid>  
                 </h:form>
             </p:tab>  
 
-            <p:tab id="tab2" title="Create an Account">  
+            <p:tab id="tab2" title="#{msg.kayitol}">  
                 <h:form id="account">
                     <p:growl id="growl" showDetail="true" sticky="true" /> 
                     <h:panelGrid id="grid" styleClass="panelGridCenter" columns="3" cellpadding="10">  
@@ -60,7 +60,7 @@
                             <p:graphicImage style="margin: 10px 100px 10px 100px;" value="/img/logo.png" />
                         </f:facet>  
 
-                        <h:outputText value="E-Mail : *" />  
+                        <h:outputText value="#{msg.eposta}" />  
                         <p:inputText id="email" value="#{userBean.email}" required="true" label="E-Mail" requiredMessage="Please enter your email address."
                                      validatorMessage="Invalid email format">
                             <f:validateRegex
@@ -68,21 +68,21 @@
                         </p:inputText>  
                         <p:message for="email" display="tooltip" />
 
-                        <h:outputText value="Password : *" />  
+                        <h:outputText value="#{msg.sifre}" />  
                         <p:password id="password" value="#{userBean.password}" required="true" label="Password" feedback="true"/>  
                         <p:message for="password" display="tooltip"/>
 
-                        <h:outputText value="Name : *" />  
+                        <h:outputText value="#{msg.adiniz}" />  
                         <p:inputText id="name" value="#{userBean.name}" required="true" label="Name" />  
                         <p:message for="name" display="tooltip" />
 
-                        <h:outputText value="Surname : *" />  
+                        <h:outputText value="#{msg.soyadiniz}" />  
                         <p:inputText id="surname" value="#{userBean.surname}" required="true" label="Surname" />  
                         <p:message for="surname" display="tooltip" />
 
 
                         <f:facet name="footer">  
-                            <p:commandButton id="submitButton" value="Create Account" actionListener="#{userBean.doCreate}"  style="margin:0" update="grid,growl"/>  
+                            <p:commandButton id="submitButton" value="#{msg.kayitol}" actionListener="#{userBean.doCreate}"  style="margin:0" update="grid,growl"/>  
                         </f:facet> 
                     </h:panelGrid>  
                 </h:form>

@@ -4,6 +4,7 @@
  */
 package com.erenerdogan.service;
 
+import com.erenerdogan.entities.Loggers;
 import com.erenerdogan.entities.Users;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -33,7 +34,7 @@ public class UsersDaoImpl implements UsersDaoInterface {
         if (user == null) {
             return null;
         }
-        if (user.getUpassword().equals(password) && user.getUstatus()==1) {
+        if (user.getUpassword().equals(password) && user.getUstatus() == 1) {
             return user;
         }
         return null;
@@ -55,6 +56,18 @@ public class UsersDaoImpl implements UsersDaoInterface {
             et.begin();
             em.persist(user);
             et.commit();
+            Timestamp t = new Timestamp(new Date().getTime());
+            Loggers l = new Loggers();
+
+            l.setLname("Yeni Kullanici Eklendi.");
+            l.setLdescription(user.getUname() + " " + user.getUsurname() + " adlı kullanici kayit oldu.");
+            l.setLtype(1);
+            l.setLdate(t);
+
+            et.begin();
+            em.persist(l);
+            et.commit();
+            em.close();
             return true;
         } catch (Exception e) {
             return false;
@@ -90,6 +103,17 @@ public class UsersDaoImpl implements UsersDaoInterface {
         et.begin();
         em.remove(u);
         et.commit();
+        Timestamp t = new Timestamp(new Date().getTime());
+        Loggers l = new Loggers();
+
+        l.setLname("Kullanici Silme");
+        l.setLdescription(u.getUname() + " " + u.getUsurname() + " adli kullanici silindi.");
+        l.setLtype(3);
+        l.setLdate(t);
+
+        et.begin();
+        em.persist(l);
+        et.commit();
         em.close();
     }
 
@@ -99,6 +123,18 @@ public class UsersDaoImpl implements UsersDaoInterface {
         EntityTransaction et = em.getTransaction();
         et.begin();
         em.merge(user);
+        et.commit();
+
+        Timestamp t = new Timestamp(new Date().getTime());
+        Loggers l = new Loggers();
+
+        l.setLname("Kullanici Guncelleme");
+        l.setLdescription(user.getUname() + " " + user.getUsurname() + " adli kullanici güncellendi.");
+        l.setLtype(2);
+        l.setLdate(t);
+
+        et.begin();
+        em.persist(l);
         et.commit();
         em.close();
     }
@@ -111,10 +147,9 @@ public class UsersDaoImpl implements UsersDaoInterface {
     @Override
     public boolean getUserStatus(int id) {
         int status = em.find(Users.class, id).getUstatus();
-        if(status == 1)
+        if (status == 1) {
             return true;
+        }
         return false;
     }
-    
-    
 }

@@ -17,9 +17,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.RowEditEvent;
-import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -193,10 +190,7 @@ public class UserBean implements Serializable {
     public void remove(Users user){
         new UsersDaoImpl().deleteUser(user.getUid());
     } 
-    
-    public void edit(Users user){
-        user.setEditable(true);
-    } 
+     
     
     public String commaPrint(Collection c){
         if(c.size() > 1 && c.size()-1 < c.size())

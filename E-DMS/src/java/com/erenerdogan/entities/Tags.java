@@ -6,13 +6,15 @@ package com.erenerdogan.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author eren
  */
 @Entity
-@Table(name = "tags")
+@Table(name = "Tags")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Tags.findAll", query = "SELECT t FROM Tags t"),
     @NamedQuery(name = "Tags.findByTid", query = "SELECT t FROM Tags t WHERE t.tid = :tid"),

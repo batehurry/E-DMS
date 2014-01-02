@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"  
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>E-DMS</title>
+        <title>Yönetim Paneli</title>
         <style>
             .tabViewCenter {
 
@@ -17,19 +17,95 @@
                 margin: 0 auto;
 
             }
+
+            .menu
+            {
+                width: 190px !important;
+                margin-left:auto;
+                margin-right:auto;
+                padding: auto;
+                text-align: center;
+            }
+            
+            .menu2
+            {
+                width: 160px !important;
+                margin-left:auto;
+                margin-right:auto;
+                padding: auto;
+                text-align: center;
+            }
+            .menu3
+            {
+                width: 120px !important;
+                margin-left:auto;
+                margin-right:auto;
+                padding: auto;
+                text-align: center;
+            }
+
+            .acil{
+                background-color: red;
+            }
+
+            .normal{
+                background-color: lawngreen;
+            }
+            
+            .is{
+                background-color: #0099cc;
+            }
+
+            .dokuman{
+                background-color: #66ff66;
+            }
         </style>
+        <script type="text/javascript">  
+            function start() {  
+                PF('statusDialog').show();  
+            }  
+  
+            function stop() {  
+                PF('statusDialog').hide();  
+            }  
+        </script>
     </h:head>
     <h:body>
+        
+        <h:form>
+            <p:menubar> 
 
-        #{pendingUserBean.userID}<br/>
-        #{pendingUserBean.user.uname} #{pendingUserBean.user.usurname}
+
+                <p:menuitem styleClass="menu" rendered="#{userBean.auth == 1}"  value="#{msg.panel}" action="admin?faces-redirect=true" icon="ui-icon-home"/> 
+                <p:menuitem styleClass="menu" rendered="#{userBean.auth == 0}" value="#{msg.panel}" action="user?faces-redirect=true" icon="ui-icon-home"/> 
+                <p:menuitem styleClass="menu2" value="#{msg.profil}" action="settings?faces-redirect=true" icon="ui-icon-gear">
+
+                </p:menuitem>
+                <p:menuitem styleClass="menu2" rendered="#{userBean.auth == 1}" value="#{msg.zamanasimi}" action="deadline?faces-redirect=true" icon="ui-icon-calculator"/>
+                <p:menuitem styleClass="menu3" rendered="#{userBean.auth == 1}" value="#{msg.arsiv}"  action="archive?faces-redirect=true" icon="ui-icon-key"/>
+                <p:menuitem styleClass="menu" rendered="#{userBean.auth == 1}" value="#{msg.hareket}"  action="hareketler?faces-redirect=true" icon="ui-icon-bookmark"/>
+                <f:facet name="options">
+                    <p:inputText placeholder="#{msg.aramayap}" style="margin-right:10px;" 
+                                 value="#{searchBean.tag}"/>
+
+                    <p:commandButton action="#{searchBean.search}" value="#{msg.ara}" icon="ui-icon-search">
+                        <f:param name="tag" value="#{searchBean.tag}"/>
+                    </p:commandButton>
+                    <p:outputLabel value="#{fileBean.user.name} #{fileBean.user.surname} "/>
+                    <p:commandButton id="submitButton" action="#{userBean.logout}" value="#{msg.cikis}" icon="ui-icon-extlink" />  
+                </f:facet>  
+            </p:menubar>
+        </h:form>
+
+        <p:accordionPanel multiple="true">  
+            <p:tab title="#{msg.kullaniciduzelt}"> 
         <h:form> 
             <h:panelGrid id="grid" styleClass="panelGridCenter" columns="3" cellpadding="10">  
                 <f:facet name="header">  
-                    <p:graphicImage style="margin: 10px 100px 10px 100px;" value="/img/logo.png" />
+                    
                 </f:facet>  
 
-                <p:outputLabel value="E-Mail : *" />  
+                <p:outputLabel value="#{msg.eposta}" />  
                 <p:inputText id="email" value="#{pendingUserBean.email}" required="true" label="E-Mail" requiredMessage="Please enter your email address."
                              validatorMessage="Invalid email format">
                     <f:validateRegex
@@ -37,35 +113,37 @@
                 </p:inputText>  
                 <p:message for="email" display="tooltip" />
 
-                <p:outputLabel value="Name : *" />  
+                <p:outputLabel value="#{msg.adi}" />  
                 <p:inputText id="name" value="#{pendingUserBean.name}" required="true" label="Name" />  
                 <p:message for="name" display="tooltip" />
 
-                <p:outputLabel value="Surname : *" />  
+                <p:outputLabel value="#{msg.soyadi}" />  
                 <p:inputText id="surname" value="#{pendingUserBean.surname}" required="true" label="Surname" />  
                 <p:message for="surname" display="tooltip" />
 
 
-                <p:outputLabel value="User Groups : *"/>
+                <p:outputLabel value="#{msg.kullanicigruplari}"/>
                 <p:pickList id="pickList" value="#{pendingUserBean.permissions}" var="city"   
                             itemLabel="#{city}" itemValue="#{city}" required="true" label="User Groups" />
                 <p:message for="pickList" display="tooltip" />
 
-                <p:outputLabel value="Status : *" />  
+                <p:outputLabel value="#{msg.kullanicidurumu}" />  
                 <p:selectBooleanCheckbox id="status" value="#{pendingUserBean.status}" required="true" label="Status"/>
                 <p:message for="status" display="tooltip" />
                 
-                <p:outputLabel value="Authorized : " />  
+                <p:outputLabel value="#{msg.kullaniciyetkisivarmi}" />  
                 <p:selectBooleanCheckbox id="authorized" value="#{pendingUserBean.auth}"  label="Authorized"/>
                 <p:message for="authorized" display="tooltip" />
 
                 <f:facet name="footer">  
-                    <p:commandButton id="submitButton" value="Update User" action="#{pendingUserBean.updateUser}"  style="margin:0" update="grid">
+                    <p:commandButton id="submitButton" value="#{msg.guncelle}" action="#{pendingUserBean.updateUser}"  style="margin:0" update="grid">
                         <f:param name="userID" value="#{pendingUserBean.userID}" /> 
                     </p:commandButton>
                 </f:facet> 
             </h:panelGrid>  
         </h:form>
+            </p:tab>
+        </p:accordionPanel>
     </h:body>
 </html>
 

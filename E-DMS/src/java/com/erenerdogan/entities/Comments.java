@@ -7,13 +7,15 @@ package com.erenerdogan.entities;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author eren
  */
 @Entity
-@Table(name = "comments")
+@Table(name = "Comments")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Comments.findAll", query = "SELECT c FROM Comments c"),
     @NamedQuery(name = "Comments.findByCid", query = "SELECT c FROM Comments c WHERE c.cid = :cid"),
@@ -21,6 +23,9 @@ import javax.persistence.*;
     @NamedQuery(name = "Comments.findByCdate", query = "SELECT c FROM Comments c WHERE c.cdate = :cdate"),
     @NamedQuery(name = "Comments.findByCstatus", query = "SELECT c FROM Comments c WHERE c.cstatus = :cstatus")})
 public class Comments implements Serializable {
+    @Column(name = "cdate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date cdate;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +37,6 @@ public class Comments implements Serializable {
     @Lob
     @Column(name = "cdescription")
     private String cdescription;
-    @Column(name = "cdate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date cdate;
     @Column(name = "cstatus")
     private Integer cstatus;
     @JoinColumn(name = "cuid", referencedColumnName = "uid")
@@ -73,14 +75,6 @@ public class Comments implements Serializable {
 
     public void setCdescription(String cdescription) {
         this.cdescription = cdescription;
-    }
-
-    public Date getCdate() {
-        return cdate;
-    }
-
-    public void setCdate(Date cdate) {
-        this.cdate = cdate;
     }
 
     public Integer getCstatus() {
@@ -130,6 +124,14 @@ public class Comments implements Serializable {
     @Override
     public String toString() {
         return "com.erenerdogan.entities.Comments[ cid=" + cid + " ]";
+    }
+
+    public Date getCdate() {
+        return cdate;
+    }
+
+    public void setCdate(Date cdate) {
+        this.cdate = cdate;
     }
     
 }

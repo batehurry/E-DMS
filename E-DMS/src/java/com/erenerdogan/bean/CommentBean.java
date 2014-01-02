@@ -98,7 +98,14 @@ public class CommentBean implements Serializable {
         System.out.println("Comment send");
         System.out.println(userID + " " + fileID + " " + title + " " + description);
         new CommentDaoImp().addComment(userID, Integer.parseInt(fileID), title, description);
-        return "fileView?fileID=" + fileID + "faces-redirect=true";
+        return "fileView?fileID=" + fileID + "&faces-redirect=true";
+    }
+    
+    public String sendWorkComment() {
+        System.out.println("Comment send");
+        System.out.println(userID + " " + fileID + " " + title + " " + description);
+        new CommentDaoImp().addComment(userID, Integer.parseInt(fileID), title, description);
+        return "workView?fileID=" + fileID + "&faces-redirect=true";
     }
 
     public String removeComment() {
@@ -109,6 +116,17 @@ public class CommentBean implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("Remove Comment Error", "You dont have comment"));
         }
-        return "fileView?fileID=" + fileID + "faces-redirect=true";
+        return "fileView?fileID=" + fileID + "&faces-redirect=true";
+    }
+    
+    public String removeViewComment() {
+        System.out.println("Remove Comment " +commentID);
+
+        boolean result = new CommentDaoImp().removeComment(userID, commentID);
+        if (!result) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("Remove Comment Error", "You dont have comment"));
+        }
+        return "workView?fileID=" + fileID + "&faces-redirect=true";
     }
 }

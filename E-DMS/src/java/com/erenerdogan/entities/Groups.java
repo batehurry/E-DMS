@@ -7,15 +7,18 @@ package com.erenerdogan.entities;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author eren
  */
 @Entity
-@Table(name = "groups")
+@Table(name = "Groups")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Groups.findAll", query = "SELECT g FROM Groups g ORDER BY g.gname ASC"),
+    @NamedQuery(name = "Groups.findAll", query = "SELECT g FROM Groups g"),
     @NamedQuery(name = "Groups.findByGid", query = "SELECT g FROM Groups g WHERE g.gid = :gid"),
     @NamedQuery(name = "Groups.findByGsubid", query = "SELECT g FROM Groups g WHERE g.gsubid = :gsubid"),
     @NamedQuery(name = "Groups.findByGname", query = "SELECT g FROM Groups g WHERE g.gname = :gname"),
@@ -33,10 +36,7 @@ public class Groups implements Serializable {
     private String gname;
     @Column(name = "gstatus")
     private Integer gstatus;
-    @JoinTable(name = "usergroups", joinColumns = {
-        @JoinColumn(name = "uggid", referencedColumnName = "gid")}, inverseJoinColumns = {
-        @JoinColumn(name = "uguid", referencedColumnName = "uid")})
-    @ManyToMany
+    @ManyToMany(mappedBy = "groupsCollection")
     private Collection<Users> usersCollection;
     @OneToMany(mappedBy = "gsgid")
     private Collection<GroupShared> groupSharedCollection;
@@ -80,6 +80,7 @@ public class Groups implements Serializable {
         this.gstatus = gstatus;
     }
 
+    @XmlTransient
     public Collection<Users> getUsersCollection() {
         return usersCollection;
     }
@@ -88,6 +89,7 @@ public class Groups implements Serializable {
         this.usersCollection = usersCollection;
     }
 
+    @XmlTransient
     public Collection<GroupShared> getGroupSharedCollection() {
         return groupSharedCollection;
     }

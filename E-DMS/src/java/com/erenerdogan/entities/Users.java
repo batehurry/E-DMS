@@ -8,13 +8,16 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author eren
  */
 @Entity
-@Table(name = "users")
+@Table(name = "Users")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u"),
     @NamedQuery(name = "Users.findByUid", query = "SELECT u FROM Users u WHERE u.uid = :uid"),
@@ -23,8 +26,12 @@ import javax.persistence.*;
     @NamedQuery(name = "Users.findByUemail", query = "SELECT u FROM Users u WHERE u.uemail = :uemail"),
     @NamedQuery(name = "Users.findByUpassword", query = "SELECT u FROM Users u WHERE u.upassword = :upassword"),
     @NamedQuery(name = "Users.findByUrdate", query = "SELECT u FROM Users u WHERE u.urdate = :urdate"),
-    @NamedQuery(name = "Users.findByUstatus", query = "SELECT u FROM Users u WHERE u.ustatus = :ustatus")})
+    @NamedQuery(name = "Users.findByUstatus", query = "SELECT u FROM Users u WHERE u.ustatus = :ustatus"),
+    @NamedQuery(name = "Users.findByUauthorized", query = "SELECT u FROM Users u WHERE u.uauthorized = :uauthorized")})
 public class Users implements Serializable {
+    @Column(name = "urdate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date urdate;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,20 +46,22 @@ public class Users implements Serializable {
     private String uemail;
     @Column(name = "upassword")
     private String upassword;
-    @Column(name = "urdate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date urdate;
     @Column(name = "ustatus")
     private Integer ustatus;
     @Column(name = "uauthorized")
     private Integer uauthorized;
-    @ManyToMany(mappedBy = "usersCollection")
+    @JoinTable(name = "UserGroups", joinColumns = {
+        @JoinColumn(name = "uguid", referencedColumnName = "uid")}, inverseJoinColumns = {
+        @JoinColumn(name = "uggid", referencedColumnName = "gid")})
+    @ManyToMany
     private Collection<Groups> groupsCollection;
     @OneToMany(mappedBy = "cuid")
     private Collection<Comments> commentsCollection;
+    @OneToMany(mappedBy = "fuid")
+    private Collection<Files> filesCollection;
+    @OneToMany(mappedBy = "wuid")
+    private Collection<Works> worksCollection;
 
-    private transient boolean editable;
-    
     public Users() {
     }
 
@@ -60,15 +69,6 @@ public class Users implements Serializable {
         this.uid = uid;
     }
 
-    public boolean isEditable() {
-        return editable;
-    }
-
-    public void setEditable(boolean editable) {
-        this.editable = editable;
-    }
-
-    
     public Integer getUid() {
         return uid;
     }
@@ -109,12 +109,12 @@ public class Users implements Serializable {
         this.upassword = upassword;
     }
 
-    public Date getUrdate() {
-        return urdate;
+    public Integer getUstatus() {
+        return ustatus;
     }
 
-    public void setUrdate(Date urdate) {
-        this.urdate = urdate;
+    public void setUstatus(Integer ustatus) {
+        this.ustatus = ustatus;
     }
 
     public Integer getUauthorized() {
@@ -124,17 +124,8 @@ public class Users implements Serializable {
     public void setUauthorized(Integer uauthorized) {
         this.uauthorized = uauthorized;
     }
-    
-    
 
-    public Integer getUstatus() {
-        return ustatus;
-    }
-
-    public void setUstatus(Integer ustatus) {
-        this.ustatus = ustatus;
-    }
-
+    @XmlTransient
     public Collection<Groups> getGroupsCollection() {
         return groupsCollection;
     }
@@ -143,12 +134,31 @@ public class Users implements Serializable {
         this.groupsCollection = groupsCollection;
     }
 
+    @XmlTransient
     public Collection<Comments> getCommentsCollection() {
         return commentsCollection;
     }
 
     public void setCommentsCollection(Collection<Comments> commentsCollection) {
         this.commentsCollection = commentsCollection;
+    }
+
+    @XmlTransient
+    public Collection<Files> getFilesCollection() {
+        return filesCollection;
+    }
+
+    public void setFilesCollection(Collection<Files> filesCollection) {
+        this.filesCollection = filesCollection;
+    }
+
+    @XmlTransient
+    public Collection<Works> getWorksCollection() {
+        return worksCollection;
+    }
+
+    public void setWorksCollection(Collection<Works> worksCollection) {
+        this.worksCollection = worksCollection;
     }
 
     @Override
@@ -174,6 +184,14 @@ public class Users implements Serializable {
     @Override
     public String toString() {
         return "com.erenerdogan.entities.Users[ uid=" + uid + " ]";
+    }
+
+    public Date getUrdate() {
+        return urdate;
+    }
+
+    public void setUrdate(Date urdate) {
+        this.urdate = urdate;
     }
     
 }
